@@ -1,0 +1,165 @@
+<appHead></appHead>
+<!-- CAROUSEL -->
+<div id="intro" class="view carousel slide" data-ride="carousel">
+  <div class=" carousel-caption d-none d-md-block mask rgba-black-strong ">
+
+    <div class="container fontRaleway text-justify">
+      <div class="row text-justify">
+        <div class="col">
+          <div class="row text-justify  mb-3 mr-4">
+            <div class="col">
+              <span><h3>Project name:</h3></span><span>{{project.projectName}}</span>
+            </div>
+
+          </div>
+          <div class="row text-justify mb-3 mr-4">
+            <div class="col">
+              <span><h3>Project code:</h3></span><span>{{project.projectCode}}</span>
+            </div>
+          </div>
+          <div class="row text-justify mb-3 mr-4">
+            <div class="col">
+              <span><h3>Project creator:</h3></span><span>{{projectAuthor.name}}</span>
+            </div>
+          </div>
+          <div class="row text-justify mb-3 mr-4">
+            <div class="col">
+              <span><h3>Readiness degree:</h3></span><span>{{project.readinessDegree}}%</span>
+            </div>
+          </div>
+          <div class="row text-justify mb-3 mr-4">
+            <div class="col">
+              <span><h3>Date of completion:</h3></span><span>{{project.dateOfCompletion}}</span>
+            </div>
+          </div>
+          <div class="row text-justify mb-3 mr-4">
+            <div class="col">
+              <span><h3>Description of project:</h3></span><span>{{project.descriptionOfProject}}</span>
+            </div>
+          </div>
+        </div>
+
+        <!--        TWO COL-->
+        <div class="col">
+
+          <h3>Tasks:</h3>
+          <div class="list-group-flush fontRaleway">
+            <a href="#" class="list-group-item-muted">
+              <h4 class="list-group-item-heading">Заголовок</h4>
+              <p class="list-group-item-text text-white">Cras justo odio</p>
+            </a>
+            <a href="#" class="list-group-item-muted">
+              <h4 class="list-group-item-heading">Заголовок</h4>
+              <p class="list-group-item-text text-white">Cras justo odio</p>
+            </a>
+            <a href="#" class="list-group-item-muted">
+              <h4 class="list-group-item-heading">Заголовок</h4>
+              <p class="list-group-item-text text-white">Cras justo odio</p>
+            </a>
+            <a href="#" class="list-group-item-muted">
+              <h4 class="list-group-item-heading">Заголовок</h4>
+              <p class="list-group-item-text text-white">Cras justo odio</p>
+            </a>
+            <a href="#" class="list-group-item-muted">
+              <h4 class="list-group-item-heading">Заголовок</h4>
+              <p class="list-group-item-text text-white">Cras justo odio</p>
+            </a>
+            <a href="#" class="list-group-item-muted">
+              <h4 class="list-group-item-heading">Заголовок</h4>
+              <p class="list-group-item-text text-white">Cras justo odio</p>
+            </a>
+            <a href="#" class="list-group-item-muted">
+              <h4 class="list-group-item-heading">Заголовок</h4>
+              <p class="list-group-item-text text-white">Cras justo odio</p>
+            </a>
+          </div>
+
+
+        </div>
+      </div>
+      <button class="btn btn-primary " (click)="_openModal(template,project)" >Edit project</button>
+      <button class="btn btn-primary">Delete project</button>
+    </div>
+  </div>
+
+
+  <ng-template #template>
+      <div class="modal-header">
+        <h4 class="modal-title pull-left">{{editMode ? "EDIT PROJECT": "NEW PROJECT"}} </h4>
+        <button type="button" class="close pull-right"
+                aria-label="Close" (click)="_closeModal()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+          <div class="modal-body">
+            <div class="container-fluid">
+              <form>
+                <div class="form-group">
+                  <label for="nameProjectInput">Project name</label>
+                  <input type="text" class="form-control" id="nameProjectInput"
+                         placeholder="Project name"
+                         name="projectName" [(ngModel)]="editableProject.projectName" #projectName="ngModel"
+                         required/>
+                  <div [hidden]="projectName.valid || projectName.untouched" class="alert alert-danger">
+                    Pls set project name <!--Easy way to create client validation-->
+                  </div>
+
+                </div>
+                <div class="form-group">
+                  <label for="codeProjectInput">Project code</label>
+                  <input type="text" class="form-control" id="codeProjectInput"
+                         placeholder="Project code"
+                         name="projectCode" [(ngModel)]="editableProject.projectCode" #projectCode="ngModel"
+                         required/>
+                  <div [hidden]="projectCode.valid || projectCode.untouched" class="alert alert-danger">
+                    Pls set project code <!--Easy way to create client validation-->
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label for="dateCompletion">Date of completion</label>
+                  <input type="date" class="form-control" id="dateCompletion" placeholder="Date of completion"
+                         name="dateCompletion" [(ngModel)]="editableProject.dateOfCompletion"
+                         required/>
+
+                </div>
+                <div class="form-group">
+                  <label>Project description</label>
+                  <textarea class="form-control" aria-label="Project description"
+                            name="descriptionOfProject" [(ngModel)]="editableProject.descriptionOfProject"
+                  ></textarea>
+
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-grey" data-dismiss="modal" (click)="_closeModal()">Close</button>
+            <button type="submit" class="btn btn-primary">Add project</button>
+          </div>
+
+  </ng-template>
+
+
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img class="d-block w-100" src="assets/img/back.jpg" alt="First slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="assets/img/back2.jpg" alt="Second slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="assets/img/back3.jpg" alt="Second slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="assets/img/back4.jpg" alt="Second slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="assets/img/back5.jpg" alt="Second slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="assets/img/back6.jpg" alt="Second slide">
+    </div>
+  </div>
+</div>
+
+

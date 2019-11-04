@@ -1,0 +1,46 @@
+html,
+body,
+header,
+#intro {
+    /*height: 100%;*/
+    /* font-family: "Lato"; */
+}
+
+
+/* #intro {
+     background: url("../img/back.jpg");
+     background-size: cover;
+} */
+
+a.navbar-brand {
+    /* font-family: 'Fascinate Inline', cursive;
+    font-family: 'Cantata One', serif; */
+
+  font-family: "Raleway";
+}
+
+label,
+h5.modalTitel {
+    font-weight: bold;
+}
+
+.fontRaleway {
+    font-family: "Raleway";
+}
+
+div.modal-header {
+    font-family: "Lato";
+}
+
+.modal {
+  height: 60%;
+}
+.modal-body {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.p-0{
+  padding: 0;
+  margin: 0;
+}

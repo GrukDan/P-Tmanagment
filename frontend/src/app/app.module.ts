@@ -9,32 +9,54 @@ import { AppComponent } from "./app.component";
 import {HttpClientModule} from "@angular/common/http";
 import {Ng4LoadingSpinnerModule} from "ng4-loading-spinner";
 import {RouterModule, Routes} from "@angular/router";
-import {BillingDetailsViewComponent} from "./modules/layout/components/billing-details/billing-details-view.component";
-import {NotFoundComponent} from "./modules/layout/components/404/not-found.component";
-import {LayoutModule} from "./modules/layout/layout.module";
-import {HomeComponent} from "./modules/layout/components/home/home.component";
+
+import {  AngularFontAwesomeModule }  from 'angular-font-awesome';
+import {  MDBBootstrapModule }  from 'angular-bootstrap-md';
+import { CollapseModule } from 'ngx-bootstrap/collapse'
+
+import {CarouselComponent} from "./modules/header/carousel/carousel.component";
+import {FirstPageComponent} from "./modules/firstPage/firstPage.component";
+
+import  {NotFoundPageComponent} from "./modules/notFound/notFoundPage.component";
+// import {HeadComponent} from "./modules/header/head/appHead.component";
+import {ProjectComponent} from "./modules/project/component/project.component";
+import {TaskComponent} from "./modules/task/component/task.component";
+import {UserModule} from "./modules/user/user.module";
 
 const appRoutes: Routes = [
-  {path: "", component: HomeComponent},
-  {path: "home", component: HomeComponent},
-  {path: "billing-details/:id", component: BillingDetailsViewComponent},
-  {path: "**", component: NotFoundComponent}
+  {path: "", component: FirstPageComponent},
+  {path: 'project', component: ProjectComponent},
+  {path: 'task', component: TaskComponent},
+   {path: "**", component: NotFoundPageComponent}
 ];
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    CarouselComponent,
+    FirstPageComponent,
+    NotFoundPageComponent,
+    ProjectComponent,
+    // HeadComponent,
+     TaskComponent,
+
+
   ],
   imports: [
+    //почему нужно добавлять сюда??
+    UserModule,
+
     BrowserModule,
     FormsModule,
-    LayoutModule,
     HttpClientModule,
     Ng4LoadingSpinnerModule.forRoot(),
     BsDropdownModule.forRoot(),
     TooltipModule.forRoot(),
     ModalModule.forRoot(),
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    MDBBootstrapModule.forRoot(),
+    AngularFontAwesomeModule,
+    CollapseModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

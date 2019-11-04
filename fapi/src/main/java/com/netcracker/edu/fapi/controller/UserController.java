@@ -18,7 +18,7 @@ public class UserController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping
-    public List<User> getAllUsers(){
+    public List<User> getAllUsers() {
         return userService.findAll();
     }
 
@@ -27,8 +27,10 @@ public class UserController {
         return userService.findByLogin(login);
     }
 
-    @RequestMapping(value="/signup", method = RequestMethod.POST, produces = "application/json")
-    public User saveUser(@RequestBody User user){
+    //    @RequestMapping(value="/signup", method = RequestMethod.POST, produces = "application/json")
+    @RequestMapping(method = RequestMethod.POST)
+    public User saveUser(@RequestBody User user) {
+        System.out.println("USER work....");
         return userService.save(user);
     }
 }

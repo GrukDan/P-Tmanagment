@@ -1,8 +1,8 @@
 package com.netcracker.edu.fapi.controller;
 
-import com.netcracker.edu.fapi.security.TokenProvider;
 import com.netcracker.edu.fapi.models.AuthToken;
 import com.netcracker.edu.fapi.models.LoginUser;
+import com.netcracker.edu.fapi.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -15,7 +15,8 @@ import org.springframework.web.client.RestTemplate;
 import java.util.*;
 
 @Service("customUserDetailsService")
-public class UserServiceImpl implements UserDetailsService, UserService {
+public class UserServiceImpl implements UserDetailsService, UserService
+{
 
     @Value("${backend.server.url}")
     private String backendServerUrl;
@@ -39,6 +40,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public User save(User user) {
+        System.out.println("USERSERVICEIMPL work....");
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.postForEntity(backendServerUrl + "/api/user", user, User.class).getBody();

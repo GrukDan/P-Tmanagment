@@ -1,0 +1,112 @@
+<!-- ADD PROJECT -->
+
+
+
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">NEW PROJECT</h4>
+    <button type="button" class="close pull-right"
+            aria-label="Close" (click)="_closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container-fluid">
+      <form>
+        <div class="form-group">
+          <label for="nameProjectInput">Project name</label>
+          <input type="text" class="form-control" id="nameProjectInput"
+                 placeholder="Project name"
+                 name="projectName" [(ngModel)]="project.projectName" #projectName="ngModel"
+                 required/>
+          <div [hidden]="projectName.valid || projectName.untouched" class="alert alert-danger">
+            Pls set project name <!--Easy way to create client validation-->
+          </div>
+
+        </div>
+        <div class="form-group">
+          <label for="codeProjectInput">Project code</label>
+          <input type="text" class="form-control" id="codeProjectInput"
+                 placeholder="Project code"
+                 name="projectCode" [(ngModel)]="project.projectCode" #projectCode="ngModel"
+                 required/>
+          <div [hidden]="projectCode.valid || projectCode.untouched" class="alert alert-danger">
+            Pls set project code <!--Easy way to create client validation-->
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="dateCompletion">Date of completion</label>
+          <input type="date" class="form-control" id="dateCompletion" placeholder="Date of completion"
+                 name="dateCompletion" [(ngModel)]="project.dateOfCompletion"
+                 required/>
+
+        </div>
+        <div class="form-group">
+          <label>Project description</label>
+          <textarea class="form-control" aria-label="Project description"
+                    name="descriptionOfProject" [(ngModel)]="project.descriptionOfProject"
+          ></textarea>
+
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button class="btn btn-grey" data-dismiss="modal" (click)="_closeModal()">Close</button>
+    <button type="submit" class="btn btn-primary">Add project</button>
+  </div>
+
+
+
+
+
+
+
+<!--<div class="modal fade" id="NewProjectModal" tabindex="-1" role="dialog" aria-label="NewProjectModal"-->
+<!--     aria-hidden="true">-->
+<!--  <div class="modal-dialog modal-xl" role="document">-->
+
+<!--    <div class="modal-content">-->
+<!--      <div class="modal-header">-->
+<!--        <h5 class="modalTitel">NEW PROJECT</h5>-->
+<!--        <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+
+<!--          <span aria-hidden="true">&times;</span>-->
+<!--        </button>-->
+<!--      </div>-->
+<!--      <div class="modal-body">-->
+<!--        <div class="container-fluid">-->
+<!--          <form>-->
+<!--            <div class="form-group">-->
+<!--              <label for="nameProjectInput">Project name</label>-->
+<!--              <input type="text" class="form-control" id="nameProjectInput"-->
+<!--                     placeholder="Project name" required/>-->
+
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--              <label for="codeProjectInput">Project code</label>-->
+<!--              <input type="text" class="form-control" id="codeProjectInput"-->
+<!--                     placeholder="Project code" required/>-->
+
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--              <label for="dateCompletion">Date of completion</label>-->
+<!--              <input type="date" class="form-control" id="dateCompletion" placeholder="Date of completion"-->
+<!--                     required/>-->
+
+<!--            </div>-->
+<!--            <div class="form-group">-->
+<!--              <label for="dateCompletion">Project description</label>-->
+<!--              <textarea class="form-control" aria-label="Project description"></textarea>-->
+
+<!--            </div>-->
+<!--          </form>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <div class="modal-footer">-->
+<!--        <button class="btn btn-grey" data-dismiss="modal">Close</button>-->
+<!--        <button type="submit" class="btn btn-primary">Add project</button>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->
+
