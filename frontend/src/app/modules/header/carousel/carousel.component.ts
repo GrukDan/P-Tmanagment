@@ -1,5 +1,4 @@
 import {Component, TemplateRef} from "@angular/core";
-import {Project} from "../../project/model/project";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
 
 @Component({

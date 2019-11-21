@@ -1,0 +1,40 @@
+<div class="mt-5 text-justify">
+  <h2>Search result for: {{searchStr}}</h2>
+  <table class="table table-hover table-dark ">
+    <thead>
+    <tr>
+      <th scope="col">Task code</th>
+      <th scope="col" class="waves-button" >Task name</th>
+      <th scope="col" class="waves-button">Priority</th>
+      <th scope="col" class="waves-button" >Status</th>
+      <th scope="col" class="waves-button" >Task creator</th>
+      <th scope="col" class="waves-button" >Task executor</th>
+      <th scope="col" class="waves-button" >Date of creation</th>
+      <th scope="col" class="waves-button" >Due date</th>
+      <th scope="col" class="waves-button" >Update</th>
+
+    </tr>
+    </thead>
+    <tbody *ngIf="tasks.length>0; then table else void_table;">
+    </tbody>
+    <ng-template #table>
+      <tr *ngFor="let task of tasks">
+        <td>{{task.taskCode}}</td>
+        <td>{{task.taskName}}</td>
+        <td>{{task.priority}}</td>
+        <td >{{task.status}}</td>
+        <td >{{task.taskCreator}}</td>
+        <td >{{task.executor}}</td>
+        <td>{{task.dateOfCreation | date}}</td>
+        <td>{{task.dueDate | date}}</td>
+        <td>{{task.update | date}}</td>
+        <td><button class="btn btn-primary" routerLink="task/{{task.idTask}}">More</button></td>
+      </tr>
+    </ng-template>
+    <ng-template #void_table>
+      <tr>
+        <td colspan="11">No tasks found.</td>
+      </tr>
+    </ng-template>
+  </table>
+</div>

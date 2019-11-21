@@ -5,11 +5,11 @@ import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {UserService} from "./services/user.service";
-import {HeadComponent} from "../header/head/appHead.component";
+import {AccountComponent} from "./component/account.component";
 
 @NgModule({
   declarations: [
-    HeadComponent
+    AccountComponent
   ],
   imports: [
     BrowserModule,
@@ -19,9 +19,8 @@ import {HeadComponent} from "../header/head/appHead.component";
     Ng4LoadingSpinnerModule.forRoot(),
 
   ],
-
+  exports: [AccountComponent],
   providers: [UserService],
-  exports: [HeadComponent]
 })
 export class UserModule {
 }

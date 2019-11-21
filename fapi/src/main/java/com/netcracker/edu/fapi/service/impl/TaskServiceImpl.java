@@ -1,7 +1,13 @@
 package com.netcracker.edu.fapi.service.impl;
 
+import com.netcracker.edu.fapi.models.Project;
 import com.netcracker.edu.fapi.models.Task;
+import com.netcracker.edu.fapi.models.TaskViewModel;
+import com.netcracker.edu.fapi.models.User;
+import com.netcracker.edu.fapi.service.ProjectService;
 import com.netcracker.edu.fapi.service.TaskService;
+import com.netcracker.edu.fapi.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -15,6 +21,44 @@ public class TaskServiceImpl implements TaskService {
 
     @Value("${backend.server.url}")
     private String backendServerUrl;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ProjectService projectService;
+
+
+    @Override
+    public TaskViewModel findTaskViewModelById(Long  idTaskViewModel) {
+        TaskViewModel taskViewModel = new TaskViewModel(findById(idTaskViewModel));
+
+        User executor = userService.findById(taskViewModel.getExecutorId());
+        taskViewModel.setExecutorName(executor.getName());
+        taskViewModel.setExecutorSurname(executor.getSurname());
+
+        User creator = userService.findById(taskViewModel.getTaskCreatorId());
+        taskViewModel.setTaskCreatorName(creator.getName());
+        taskViewModel.setTaskCreatorSurname(creator.getSurname());
+
+        Project project = projectService.findById(taskViewModel.getIdProject());
+        User[] executors = userService.findByIdProject(project.getIdProject()).toArray(new User[0]);
+        taskViewModel.setExecutors(executors);
+        return taskViewModel;
+    }
+
+    @Override
+    public void deleteTask(Long  idTask) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.delete(backendServerUrl + "/api/task/delete/" + idTask);
+    }
+
+    @Override
+    public Task findById(Long  idTask) {
+        RestTemplate restTemplate = new RestTemplate();
+        Task task = restTemplate.getForObject(backendServerUrl + "/api/task/" + idTask, Task.class);
+        return task;
+    }
 
     @Override
     public Task findByName(String name) {
@@ -33,7 +77,28 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> findAll() {
         RestTemplate restTemplate = new RestTemplate();
-        Task[] tasksResponse = restTemplate.getForObject(backendServerUrl + "/api/task", Task[].class);
+        Task[] tasksResponse = restTemplate.getForObject(backendServerUrl + "/api/tasks", Task[].class);
+        return tasksResponse == null ? Collections.emptyList() : Arrays.asList(tasksResponse);
+    }
+
+    @Override
+    public List<Task> findByIdUser(Long  idUser) {
+        RestTemplate restTemplate = new RestTemplate();
+        Task[] tasksResponse = restTemplate.getForObject(backendServerUrl + "/api/tasks/user/" + idUser, Task[].class);
+        return tasksResponse == null ? Collections.emptyList() : Arrays.asList(tasksResponse);
+    }
+
+    @Override
+    public List<Task> findByIdProject(Long  idProject) {
+        RestTemplate restTemplate = new RestTemplate();
+        Task[] tasksResponse = restTemplate.getForObject(backendServerUrl + "/api/tasks/project/" + idProject, Task[].class);
+        return tasksResponse == null ? Collections.emptyList() : Arrays.asList(tasksResponse);
+    }
+
+    @Override
+    public List<Task> findAllByName(String taskName) {
+        RestTemplate restTemplate = new RestTemplate();
+        Task[] tasksResponse = restTemplate.getForObject(backendServerUrl + "/api/tasks/name/" + taskName, Task[].class);
         return tasksResponse == null ? Collections.emptyList() : Arrays.asList(tasksResponse);
     }
 
@@ -41,5 +106,11 @@ public class TaskServiceImpl implements TaskService {
     public Task save(Task task) {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.postForEntity(backendServerUrl + "/api/task", task, Task.class).getBody();
+    }
+
+    @Override
+    public TaskViewModel saveTaskViewModel(TaskViewModel taskViewModel) {
+        save(taskViewModel.getTask());
+        return taskViewModel;
     }
 }

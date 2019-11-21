@@ -2,6 +2,7 @@ package com.netcracker.edu.backend.service.impl;
 
 import com.netcracker.edu.backend.entity.User;
 import com.netcracker.edu.backend.repository.UserRepository;
+
 import com.netcracker.edu.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,12 +26,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findById(Long idUser) {
+        return userRepository.findByIdUser(idUser);
+    }
+
+    @Override
+    public User findByIdProject(Long idProject) {
+        return null;
+    }
+
+    @Override
     public User save(User user) {
+        System.out.println(user.toString());
         return userRepository.save(user);
     }
 
     @Override
-    public void delete(long id) {
+    public void delete(Long id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public void delete(String login) {
+
+    }
+
+    @Override
+    public List<User> findAllByProjectId(Long id) {
+        return userRepository.findAllByAssignProject(id);
     }
 }

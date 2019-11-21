@@ -3,8 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/be/backend.iml" filepath="$PROJECT_DIR$/be/backend.iml" />
-      <module fileurl="file://$PROJECT_DIR$/edu-parent.iml" filepath="$PROJECT_DIR$/edu-parent.iml" />
       <module fileurl="file://$PROJECT_DIR$/fapi/fapi.iml" filepath="$PROJECT_DIR$/fapi/fapi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/project-task-managment.iml" filepath="$PROJECT_DIR$/project-task-managment.iml" />
     </modules>
   </component>
 </project>

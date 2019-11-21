@@ -5,16 +5,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class User {
-    private int idUser;
+    private Long idUser;
     private String name;
     private String surname;
     private String email;
     private Object role;
     private String login;
     private String password;
-    private Integer assignProject;
+    private Long assignProject;
 
-    public User(int idUser, String name, String surname, String email, Object role, String login, String password, Integer assignProject) {
+    public User(Long idUser, String name, String surname, String email, Object role, String login, String password, Long assignProject) {
         this.idUser = idUser;
         this.name = name;
         this.surname = surname;
@@ -27,11 +27,11 @@ public class User {
 
 
 
-    public Integer getAssignProject() {
+    public Long getAssignProject() {
         return assignProject;
     }
 
-    public void setAssignProject(Integer assignProject) {
+    public void setAssignProject(Long assignProject) {
         this.assignProject = assignProject;
     }
 
@@ -39,11 +39,11 @@ public class User {
     }
 
 
-    public int getIdUser() {
+    public Long getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(int idUser) {
+    public void setIdUser(Long idUser) {
         this.idUser = idUser;
     }
 

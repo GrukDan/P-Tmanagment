@@ -2,25 +2,29 @@ package com.netcracker.edu.fapi.controller;
 
 
 import com.netcracker.edu.fapi.models.Project;
+import com.netcracker.edu.fapi.models.ProjectViewModel;
 import com.netcracker.edu.fapi.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/project")
+@RequestMapping("/api")
 public class ProjectController {
 
 
     @Autowired
     private ProjectService projectService;
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping
-    public List<Project> getAllProjects() {
+
+    @GetMapping("/projects")
+    public List<Project> getAllProjects()
+    {
+        System.out.println("get all");
         return projectService.findAll();
     }
 
@@ -34,9 +38,23 @@ public class ProjectController {
         return projectService.findByCode(code);
     }
 
-    //    @RequestMapping(value="/signup", method = RequestMethod.POST, produces = "application/json")
-    @RequestMapping(method = RequestMethod.POST)
+    @RequestMapping(value="/project", method = RequestMethod.POST)
     public Project saveProject(@RequestBody Project project) {
         return projectService.save(project);
+    }
+
+    @RequestMapping(value="/project/{id}", method = RequestMethod.GET)
+    public Project getProjectById(@PathVariable String id) {
+        return projectService.findById(Long.valueOf(id));
+    }
+
+    @RequestMapping(value="/project/view/model/{id}", method = RequestMethod.GET)
+    public ProjectViewModel getProjectViewModelById(@PathVariable String id) {
+        return projectService.findProjectViewModelById(Long.valueOf(id));
+    }
+
+    @RequestMapping(value="/project/view/model", method = RequestMethod.POST)
+    public Project saveProjectViewModel(@RequestBody ProjectViewModel projectViewModel) {
+        return projectService.saveProjectViewModel(projectViewModel);
     }
 }

@@ -1,29 +1,27 @@
 package com.netcracker.edu.backend.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Date;
 import java.util.Objects;
 
 @Entity
+@Table(name = "project")
 public class Project {
-    private int idProject;
+    private long idProject;
     private String projectName;
     private Date dateCompletion;
     private Double readinessDegree;
     private String description;
     private String projectCode;
-    private int projectCreator;
+    private long projectCreator;
 
     @Id
     @Column(name = "id_project")
-    public int getIdProject() {
+    public long getIdProject() {
         return idProject;
     }
 
-    public void setIdProject(int idProject) {
+    public void setIdProject(long idProject) {
         this.idProject = idProject;
     }
 
@@ -79,11 +77,11 @@ public class Project {
 
     @Basic
     @Column(name = "project_creator")
-    public int getProjectCreator() {
+    public long getProjectCreator() {
         return projectCreator;
     }
 
-    public void setProjectCreator(int projectCreator) {
+    public void setProjectCreator(long projectCreator) {
         this.projectCreator = projectCreator;
     }
 
@@ -104,5 +102,18 @@ public class Project {
     @Override
     public int hashCode() {
         return Objects.hash(idProject, projectName, dateCompletion, readinessDegree, description, projectCode, projectCreator);
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "idProject=" + idProject +
+                ", projectName='" + projectName + '\'' +
+                ", dateCompletion=" + dateCompletion +
+                ", readinessDegree=" + readinessDegree +
+                ", description='" + description + '\'' +
+                ", projectCode='" + projectCode + '\'' +
+                ", projectCreator=" + projectCreator +
+                '}';
     }
 }

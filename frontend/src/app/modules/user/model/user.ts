@@ -1,4 +1,5 @@
 export class User {
+  idUser:string;
   name: string;
   surname: string;
   email: string;
@@ -8,6 +9,7 @@ export class User {
 
   static cloneBase(user: User): User {
     const clonedUser: User = new User();
+    clonedUser.idUser = user.idUser;
     clonedUser.name = user.name;
     clonedUser.surname = user.surname;
     clonedUser.email = user.email;

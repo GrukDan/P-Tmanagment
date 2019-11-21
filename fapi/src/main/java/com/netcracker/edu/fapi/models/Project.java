@@ -3,19 +3,19 @@ package com.netcracker.edu.fapi.models;
 import java.util.Date;
 
 public class Project {
-    private int idProject;
+    private Long idProject;
     private String projectName;
     private Date dateCompletion;
     private Double readinessDegree;
     private String description;
     private String projectCode;
-    private int projectCreator;
+    private Long projectCreator;
 
-    public int getIdProject() {
+    public Long getIdProject() {
         return idProject;
     }
 
-    public void setIdProject(int idProject) {
+    public void setIdProject(Long idProject) {
         this.idProject = idProject;
     }
 
@@ -59,11 +59,24 @@ public class Project {
         this.projectCode = projectCode;
     }
 
-    public int getProjectCreator() {
+    public Long getProjectCreator() {
         return projectCreator;
     }
 
-    public void setProjectCreator(int projectCreator) {
+    public void setProjectCreator(Long projectCreator) {
         this.projectCreator = projectCreator;
+    }
+
+    @Override
+    public String toString() {
+        return "Project{" +
+                "idProject=" + idProject +
+                ", projectName='" + projectName + '\'' +
+                ", dateCompletion=" + dateCompletion +
+                ", readinessDegree=" + readinessDegree +
+                ", description='" + description + '\'' +
+                ", projectCode='" + projectCode + '\'' +
+                ", projectCreator=" + projectCreator +
+                '}';
     }
 }

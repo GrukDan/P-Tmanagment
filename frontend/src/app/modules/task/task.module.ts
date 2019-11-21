@@ -6,12 +6,12 @@ import {FormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {TaskService} from "./services/task.service";
 import {TaskComponent} from "./component/task.component";
-// import {BillingDetailsComponent} from './components/details/billing-details.component';
+
 
 @NgModule({
   declarations: [
     TaskComponent,
-    // BillingDetailsComponent
+
   ],
   imports: [
     BrowserModule,

@@ -1,34 +1,35 @@
 package com.netcracker.edu.backend.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import com.netcracker.edu.backend.entity.enums.PriorityEnum;
+import com.netcracker.edu.backend.entity.enums.StatusEnum;
+
+import javax.persistence.*;
 import java.sql.Date;
 import java.util.Objects;
 
 @Entity
+@Table(name = "task")
 public class Task {
-    private int idTask;
+    private long idTask;
     private String taskName;
-    private Object priority;
-    private Object status;
+    private PriorityEnum priority;
+    private StatusEnum status;
     private Date dateOfCreation;
     private Date dueDate;
     private Date updated;
     private String description;
-    private Integer executor;
-    private int idProject;
+    private long executor;
+    private long idProject;
     private String taskCode;
-    private int taskCreator;
+    private long taskCreator;
 
     @Id
     @Column(name = "id_task")
-    public int getIdTask() {
+    public long getIdTask() {
         return idTask;
     }
 
-    public void setIdTask(int idTask) {
+    public void setIdTask(long idTask) {
         this.idTask = idTask;
     }
 
@@ -44,21 +45,23 @@ public class Task {
 
     @Basic
     @Column(name = "priority")
-    public Object getPriority() {
+    @Enumerated(EnumType.STRING)
+    public PriorityEnum getPriority() {
         return priority;
     }
 
-    public void setPriority(Object priority) {
+    public void setPriority(PriorityEnum priority) {
         this.priority = priority;
     }
 
     @Basic
     @Column(name = "status")
-    public Object getStatus() {
+    @Enumerated(EnumType.STRING)
+    public StatusEnum getStatus() {
         return status;
     }
 
-    public void setStatus(Object status) {
+    public void setStatus(StatusEnum status) {
         this.status = status;
     }
 
@@ -104,21 +107,21 @@ public class Task {
 
     @Basic
     @Column(name = "executor")
-    public Integer getExecutor() {
+    public long getExecutor() {
         return executor;
     }
 
-    public void setExecutor(Integer executor) {
+    public void setExecutor(long executor) {
         this.executor = executor;
     }
 
     @Basic
     @Column(name = "id_project")
-    public int getIdProject() {
+    public long getIdProject() {
         return idProject;
     }
 
-    public void setIdProject(int idProject) {
+    public void setIdProject(long idProject) {
         this.idProject = idProject;
     }
 
@@ -134,11 +137,11 @@ public class Task {
 
     @Basic
     @Column(name = "task_creator")
-    public int getTaskCreator() {
+    public long getTaskCreator() {
         return taskCreator;
     }
 
-    public void setTaskCreator(int taskCreator) {
+    public void setTaskCreator(long taskCreator) {
         this.taskCreator = taskCreator;
     }
 
@@ -164,5 +167,23 @@ public class Task {
     @Override
     public int hashCode() {
         return Objects.hash(idTask, taskName, priority, status, dateOfCreation, dueDate, updated, description, executor, idProject, taskCode, taskCreator);
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "idTask=" + idTask +
+                ", taskName='" + taskName + '\'' +
+                ", priority='" + priority + '\'' +
+                ", status='" + status + '\'' +
+                ", dateOfCreation=" + dateOfCreation +
+                ", dueDate=" + dueDate +
+                ", updated=" + updated +
+                ", description='" + description + '\'' +
+                ", executor=" + executor +
+                ", idProject=" + idProject +
+                ", taskCode='" + taskCode + '\'' +
+                ", taskCreator=" + taskCreator +
+                '}';
     }
 }

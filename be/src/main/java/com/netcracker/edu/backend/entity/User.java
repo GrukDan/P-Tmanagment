@@ -1,29 +1,29 @@
 package com.netcracker.edu.backend.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import com.netcracker.edu.backend.entity.enums.RoleEnum;
+
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
+@Table(name = "user")
 public class User {
-    private int idUser;
+    private long idUser;
     private String name;
     private String surname;
     private String email;
-    private Object role;
+    private RoleEnum role;
     private String login;
     private String password;
-    private Integer assignProject;
+    private Long assignProject;
 
     @Id
     @Column(name = "id_user")
-    public int getIdUser() {
+    public long getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(int idUser) {
+    public void setIdUser(long idUser) {
         this.idUser = idUser;
     }
 
@@ -59,11 +59,12 @@ public class User {
 
     @Basic
     @Column(name = "role")
-    public Object getRole() {
+    @Enumerated(EnumType.STRING)
+    public RoleEnum getRole() {
         return role;
     }
 
-    public void setRole(Object role) {
+    public void setRole(RoleEnum role) {
         this.role = role;
     }
 
@@ -89,11 +90,11 @@ public class User {
 
     @Basic
     @Column(name = "assign_project")
-    public Integer getAssignProject() {
+    public Long getAssignProject() {
         return assignProject;
     }
 
-    public void setAssignProject(Integer assignProject) {
+    public void setAssignProject(Long assignProject) {
         this.assignProject = assignProject;
     }
 
@@ -115,5 +116,19 @@ public class User {
     @Override
     public int hashCode() {
         return Objects.hash(idUser, name, surname, email, role, login, password, assignProject);
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "idUser=" + idUser +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", assignProject=" + assignProject +
+                '}';
     }
 }

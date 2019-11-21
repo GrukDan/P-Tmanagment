@@ -3,7 +3,7 @@ package com.netcracker.edu.fapi.models;
 import java.util.Date;
 
 public class Task {
-    private int idTask;
+    private Long idTask;
     private String taskName;
     private Object priority;
     private Object status;
@@ -11,16 +11,16 @@ public class Task {
     private Date dueDate;
     private Date updated;
     private String description;
-    private Integer executor;
-    private int idProject;
+    private Long executor;
+    private Long idProject;
     private String taskCode;
-    private int taskCreator;
+    private Long taskCreator;
 
-    public int getIdTask() {
+    public Long getIdTask() {
         return idTask;
     }
 
-    public void setIdTask(int idTask) {
+    public void setIdTask(Long idTask) {
         this.idTask = idTask;
     }
 
@@ -80,19 +80,19 @@ public class Task {
         this.description = description;
     }
 
-    public Integer getExecutor() {
+    public Long getExecutor() {
         return executor;
     }
 
-    public void setExecutor(Integer executor) {
+    public void setExecutor(Long executor) {
         this.executor = executor;
     }
 
-    public int getIdProject() {
+    public Long getIdProject() {
         return idProject;
     }
 
-    public void setIdProject(int idProject) {
+    public void setIdProject(Long idProject) {
         this.idProject = idProject;
     }
 
@@ -104,12 +104,29 @@ public class Task {
         this.taskCode = taskCode;
     }
 
-    public int getTaskCreator() {
+    public Long getTaskCreator() {
         return taskCreator;
     }
 
-    public void setTaskCreator(int taskCreator) {
+    public void setTaskCreator(Long taskCreator) {
         this.taskCreator = taskCreator;
     }
 
+    @Override
+    public String toString() {
+        return "Task{" +
+                "idTask=" + idTask +
+                ", taskName='" + taskName + '\'' +
+                ", priority=" + priority +
+                ", status=" + status +
+                ", dateOfCreation=" + dateOfCreation +
+                ", dueDate=" + dueDate +
+                ", updated=" + updated +
+                ", description='" + description + '\'' +
+                ", executor=" + executor +
+                ", idProject=" + idProject +
+                ", taskCode='" + taskCode + '\'' +
+                ", taskCreator=" + taskCreator +
+                '}';
+    }
 }

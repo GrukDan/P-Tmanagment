@@ -1,59 +1,66 @@
-import {Component, TemplateRef} from "@angular/core";
+import {Component, OnInit, TemplateRef} from "@angular/core";
 import {Project} from "../model/project";
 import {Task} from "../../task/model/task";
 import {User} from "../../user/model/user";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
+import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
+import {Subscription} from "rxjs";
+import {UserService} from "../../user/services/user.service";
 import {ProjectService} from "../services/project.service";
+import {TaskService} from "../../task/services/task.service";
+import {ActivatedRoute} from "@angular/router";
+import {ProjectViewModel} from "../model/projectViewModel";
+
 
 @Component({
   selector: 'project',
   templateUrl: './project.component.html',
   styleUrls: ['./style.css']
 })
-export class ProjectComponent{
+export class ProjectComponent implements OnInit{
 
-  public editMode = false;
+  public editMode:boolean = false;
+  public projectViewModel: ProjectViewModel = new ProjectViewModel();
 
-  public project: Project = new Project();
-  public editableProject: Project = new Project();
-  public projectAuthor:User = new User();
+  private subscriptions: Subscription[] = [];
+  customClass  = 'customClass';
 
-  public tasks :Task[];
-
-
-  public modalRef: BsModalRef; //we need a variable to keep a reference of our modal. This is going to be used to close the modal.
-
-  constructor(
-    private modalService: BsModalService) {
-    this.project.projectName="Имя проекта";
-    this.project.projectCode="Код проекта";
-    this.project.projectCreator="Имя проекта";
-    this.project.readinessDegree=99;
-    this.project.dateOfCompletion="Имя проекта";
-    this.project.descriptionOfProject = "Метод ngOnInit() применяется для какой-то комплексной инициализации компонента. Здесь можно выполнять загрузку данных с сервера или из других источников данных.";
-    this.projectAuthor.name = "Author";
-
-
+  constructor(private loadingService: Ng4LoadingSpinnerService,
+              private activateRoute: ActivatedRoute,
+              private projectService:ProjectService,) {
   }
 
-  public _openModal(template: TemplateRef<any>, project: Project): void {
+  ngOnInit(): void {
+    const id = this.activateRoute.snapshot.params['id'];
+    this.loadProject(id)
+  }
 
-    if (project) {
-      this.editMode = true;
-      this.editableProject = Project.cloneBase(project);
-    } else {
-      this.refreshProject();
-      this.editMode = false;
+  private loadProject(id): void {
+    this.loadingService.show();
+    // Get data from BillingAccountService
+    this.subscriptions.push(this.projectService.getProjectViewModelById(id).subscribe(projectViewModel => {
+      // Parse json response into local array
+      this.projectViewModel = projectViewModel;
+      // Check data in console
+      this.loadingService.hide();
+    }));
+  }
+
+  public edit(): void {
+    if (this.editMode) {
+      this.loadingService.show();
+      this.subscriptions.push(this.projectService.saveProjectViewModel(this.projectViewModel).subscribe(() => {
+        this.loadingService.hide();
+      }));
     }
-    this.modalRef = this.modalService.show(template); // and when the user clicks on the button to open the popup
-                                                      // we keep the modal reference and pass the template local name to the modalService.
-  }
-  public _closeModal(): void {
-    this.modalRef.hide();
+    this.editMode= !this.editMode;
   }
 
   public refreshProject(): void{
-
   }
+
+public showTask(taskId){
+    location.href="task/"+taskId;
+}
 
 }

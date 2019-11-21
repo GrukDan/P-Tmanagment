@@ -2,41 +2,64 @@ package com.netcracker.edu.fapi.controller;
 
 
 import com.netcracker.edu.fapi.models.Task;
+import com.netcracker.edu.fapi.models.TaskViewModel;
 import com.netcracker.edu.fapi.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
-@RequestMapping("/api/task")
+@RequestMapping("/api")
 public class TaskController {
-
 
     @Autowired
     private TaskService taskService;
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @GetMapping
-    public List<Task> getAllUsers() {
+    @GetMapping("/tasks")
+    public List<Task> getAllTasks() {
         return taskService.findAll();
     }
 
-    @GetMapping("/name/{name}")
-    public Task getTaskByName(@PathVariable String name) {
-        return taskService.findByName(name);
+    @RequestMapping(value = "/tasks/user/{id}", method = RequestMethod.GET)
+    public List<Task> getTasksByIdUser(@PathVariable String id) {
+        return taskService.findByIdUser(Long.valueOf(id));
     }
 
-    @GetMapping("/code/{code}")
-    public Task getTaskByCode(@PathVariable String code) {
-        return taskService.findByCode(code);
+    @RequestMapping(value = "/tasks/project/{id}", method = RequestMethod.GET)
+    public List<Task> getTasksByIdProject(@PathVariable String id) {
+        return taskService.findByIdProject(Long.valueOf(id));
     }
 
-    //    @RequestMapping(value="/signup", method = RequestMethod.POST, produces = "application/json")
-    @RequestMapping(method = RequestMethod.POST)
-    public Task saveUser(@RequestBody Task task) {
+    @RequestMapping(value = "/tasks/name/{name}", method = RequestMethod.GET)
+    public List<Task> getTasksByName(@PathVariable String name) {
+        return taskService.findAllByName(name);
+    }
+
+    @RequestMapping(value = "/task/{id}", method = RequestMethod.GET)
+    public Task getTaskById(@PathVariable String id) {
+        return taskService.findById(Long.valueOf(id));
+    }
+
+    @RequestMapping(value = "/task", method = RequestMethod.POST)
+    public Task saveTask(@RequestBody Task task) {
         return taskService.save(task);
+    }
+
+    @RequestMapping(value = "/task/view/model/{id}", method = RequestMethod.GET)
+    public TaskViewModel getTaskViewModelById(@PathVariable String id) {
+        return taskService.findTaskViewModelById(Long.valueOf(id));
+    }
+
+    @RequestMapping(value = "/task/view/model/",  method = RequestMethod.POST)
+    public TaskViewModel saveTaskViewModelById(@RequestBody TaskViewModel taskViewModel) {
+        return taskService.saveTaskViewModel(taskViewModel);
+    }
+
+    @RequestMapping(value = "/task/delete/{id}", method = RequestMethod.DELETE)
+    public void deleteTaskById(@PathVariable String id) {
+        taskService.deleteTask(Long.valueOf(id));
     }
 }

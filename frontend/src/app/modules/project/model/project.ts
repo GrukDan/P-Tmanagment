@@ -1,19 +1,21 @@
 export class Project {
+  idProject:string;
   projectName: string;
   projectCode: string;
-  dateOfCompletion: string;
+  dateCompletion: string;
   projectCreator: string;
   readinessDegree: number;
-  descriptionOfProject: string;
+  description: string;
 
   static cloneBase(project: Project): Project {
     const clonedProject: Project = new Project();
+    clonedProject.idProject = project.idProject;
     clonedProject.projectName = project.projectName;
     clonedProject.projectCode = project.projectCode;
-    clonedProject.dateOfCompletion = project.dateOfCompletion;
+    clonedProject.dateCompletion = project.dateCompletion;
     clonedProject.projectCreator = project.projectCreator;
     clonedProject.readinessDegree = project.readinessDegree;
-    clonedProject.descriptionOfProject = project.descriptionOfProject;
+    clonedProject.description = project.description;
         return clonedProject;
   }
 }

@@ -13,21 +13,22 @@ import {RouterModule, Routes} from "@angular/router";
 import {  AngularFontAwesomeModule }  from 'angular-font-awesome';
 import {  MDBBootstrapModule }  from 'angular-bootstrap-md';
 import { CollapseModule } from 'ngx-bootstrap/collapse'
-
 import {CarouselComponent} from "./modules/header/carousel/carousel.component";
-import {FirstPageComponent} from "./modules/firstPage/firstPage.component";
-
+import {FirstPageComponent} from "./modules/first-page/first_page.component";
 import  {NotFoundPageComponent} from "./modules/notFound/notFoundPage.component";
-// import {HeadComponent} from "./modules/header/head/appHead.component";
 import {ProjectComponent} from "./modules/project/component/project.component";
 import {TaskComponent} from "./modules/task/component/task.component";
-import {UserModule} from "./modules/user/user.module";
+import {HeaderModule} from "./modules/header/head/header.module";
+import {AccountComponent} from "./modules/user/component/account.component";
+import {SearchResultComponent} from "./modules/search-result-table/search_result";
 
 const appRoutes: Routes = [
   {path: "", component: FirstPageComponent},
-  {path: 'project', component: ProjectComponent},
-  {path: 'task', component: TaskComponent},
-   {path: "**", component: NotFoundPageComponent}
+  {path: 'project/:id', component: ProjectComponent},
+  {path: 'task/:id', component: TaskComponent},
+  {path: 'account', component: AccountComponent},
+  {path: 'search/:search', component: SearchResultComponent},
+  {path: "**", component: NotFoundPageComponent}
 ];
 
 @NgModule({
@@ -36,15 +37,10 @@ const appRoutes: Routes = [
     CarouselComponent,
     FirstPageComponent,
     NotFoundPageComponent,
-    ProjectComponent,
-    // HeadComponent,
-     TaskComponent,
-
 
   ],
   imports: [
-    //почему нужно добавлять сюда??
-    UserModule,
+    HeaderModule,
 
     BrowserModule,
     FormsModule,

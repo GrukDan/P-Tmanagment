@@ -1,21 +1,9 @@
 html,
-body,
-header,
-#intro {
-    /*height: 100%;*/
-    /* font-family: "Lato"; */
+body{
+  background-color: #ddc3a5;
 }
 
-
-/* #intro {
-     background: url("../img/back.jpg");
-     background-size: cover;
-} */
-
 a.navbar-brand {
-    /* font-family: 'Fascinate Inline', cursive;
-    font-family: 'Cantata One', serif; */
-
   font-family: "Raleway";
 }
 
