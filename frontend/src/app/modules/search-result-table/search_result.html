@@ -1,5 +1,5 @@
 <div class="mt-5 text-justify">
-  <h2>Search result for: {{searchStr}}</h2>
+  <h2 class="ml-3">Search result for: {{searchStr}}</h2>
   <table class="table table-hover table-dark ">
     <thead>
     <tr>
@@ -19,16 +19,16 @@
     </tbody>
     <ng-template #table>
       <tr *ngFor="let task of tasks">
-        <td>{{task.taskCode}}</td>
-        <td>{{task.taskName}}</td>
-        <td>{{task.priority}}</td>
-        <td >{{task.status}}</td>
-        <td >{{task.taskCreator}}</td>
-        <td >{{task.executor}}</td>
-        <td>{{task.dateOfCreation | date}}</td>
-        <td>{{task.dueDate | date}}</td>
-        <td>{{task.update | date}}</td>
-        <td><button class="btn btn-primary" routerLink="task/{{task.idTask}}">More</button></td>
+        <td class="text-center">{{task.taskCode}}</td>
+        <td class="text-center" (click)="sortByName()">{{task.taskName}}</td>
+        <td class="text-center">{{task.priority}}</td>
+        <td class="text-center">{{task.status}}</td>
+        <td class="text-center">{{task.taskCreator}}</td>
+        <td class="text-center">{{task.executor}}</td>
+        <td class="text-center">{{task.dateOfCreation | date}}</td>
+        <td class="text-center">{{task.dueDate | date}}</td>
+        <td class="text-center">{{task.updated | date}}</td>
+        <td><button class="btn btn-primary" [routerLink]="['/task/',task.idTask]">More</button></td>
       </tr>
     </ng-template>
     <ng-template #void_table>

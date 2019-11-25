@@ -21,6 +21,10 @@ export class TaskService { //todo create interface
     return this.http.get<Task[]>('/api/tasks/name/' + taskName);
   }
 
+  getTasksByNameSortByName(taskName:string): Observable<Task[]> {
+    return this.http.get<Task[]>('/api/tasks/name/sort/name' + taskName);
+  }
+
   saveTask(task: Task): Observable<Task> {
     return this.http.post<Task>('/api/task', task);
   }

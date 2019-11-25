@@ -26,7 +26,7 @@ export class TaskComponent implements OnInit {
 
   public edit(): void {
     if (this.editMode) {
-      this.taskViewModel.update = Date.now().toString();
+      this.taskViewModel.updated = Date.now().toString();
       this.loadingService.show();
       this.subscriptions.push(this.taskService.saveTaskViewModel(this.taskViewModel).subscribe(() => {
         this.loadingService.hide();

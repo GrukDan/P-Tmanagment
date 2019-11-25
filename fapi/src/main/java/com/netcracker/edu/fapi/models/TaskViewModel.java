@@ -24,7 +24,7 @@ public class TaskViewModel {
     private Long executorId;
     private String executorName;
     private String executorSurname;
-    private User[]  executors;
+    private UserViewModel[]  executors;
 
     public TaskViewModel(){}
     public TaskViewModel(Task task){
@@ -58,7 +58,7 @@ public class TaskViewModel {
         this.executorSurname = executorSurname;
     }
 
-    public TaskViewModel(Long idTask, String taskCode, String taskName, Object priority, Object status, Date dateOfCreation, Date dueDate, Date updated, String description, Long idProject, String projectName, Long taskCreatorId, String taskCreatorName, String taskCreatorSurname, Long executorId, String executorName, String executorSurname, User[] executors) {
+    public TaskViewModel(Long idTask, String taskCode, String taskName, Object priority, Object status, Date dateOfCreation, Date dueDate, Date updated, String description, Long idProject, String projectName, Long taskCreatorId, String taskCreatorName, String taskCreatorSurname, Long executorId, String executorName, String executorSurname, UserViewModel[] executors) {
         this.idTask = idTask;
         this.taskCode = taskCode;
         this.taskName = taskName;
@@ -250,11 +250,11 @@ public class TaskViewModel {
         this.executorName = executorName;
     }
 
-    public User[] getExecutors() {
+    public UserViewModel[] getExecutors() {
         return executors;
     }
 
-    public void setExecutors(User[] executors) {
+    public void setExecutors(UserViewModel[] executors) {
         this.executors = executors;
     }
 }

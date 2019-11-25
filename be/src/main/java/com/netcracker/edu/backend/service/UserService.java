@@ -8,6 +8,7 @@ public interface UserService {
 
     List<User> findAll();
     User findByLogin(String login);
+    User findByLoginAndPassword(String login,String password);
     User findById(Long idUser);
     User findByIdProject(Long idProject);
     User save(User user);

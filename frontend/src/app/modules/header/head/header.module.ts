@@ -6,7 +6,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {Ng4LoadingSpinnerModule} from "ng4-loading-spinner";
 import {TaskModule} from "../../task/task.module";
 import {ProjectModule} from "../../project/project.module";
-import {HeadComponent} from "./appHead.component";
+import {HeadComponent} from "./app_head.component";
 import {UserModule} from "../../user/user.module";
 import {SearchResultModule} from "../../search-result-table/search_result.module";
 

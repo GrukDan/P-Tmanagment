@@ -1,4 +1,5 @@
 import {User} from "../../user/model/user";
+import {UserViewModel} from "../../user/model/userViewModel";
 
 export class TaskViewModel {
   idTask:string;
@@ -8,7 +9,7 @@ export class TaskViewModel {
   status: string;
   dateOfCreation: string;
   dueDate: string;
-  update: string;
+  updated: string;
   description: string;
 
   idProject : string;
@@ -21,6 +22,14 @@ export class TaskViewModel {
   executorId: string;
   executorName: string;
   executorSurname: string;
-  executors:User[];
+//executor:Executor;
 
+  executors:UserViewModel[];
 }
+
+
+// type Executor{
+//   executorId: string;
+//   executorName: string;
+//   executorSurname: string;
+// }

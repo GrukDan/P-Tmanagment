@@ -9,7 +9,7 @@
         PROJECTS
       </h3>
       <ul *ngIf="projects.length>0; else projects_navbar">
-        <li *ngFor="let item of projects"><a routerLink="project/{{item.idProject}}">{{item.projectName}}</a>
+        <li *ngFor="let item of projects"><a routerLink="/project/{{item.idProject}}">{{item.projectName}}</a>
       </ul>
       <ng-template #projects_navbar>
         <li><a class="font-weight-bold">No projects created</a></li>
@@ -17,7 +17,7 @@
     </nav>
     <!--    PROJECT NAVIGATION-->
     <div class="container">
-      <a href="#" class="navbar-brand">T<i class="fa fa-font"></i>SK AND PR<i
+      <a routerLink="" class="navbar-brand">T<i class="fa fa-font"></i>SK AND PR<i
         class="fa fa-circle"></i>JECT MANAGEMENT</a>
       <button
         class="navbar-toggler"
@@ -31,27 +31,27 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item" *ngIf="flag">
-            <a href="#" class="nav-link waves-effect waves-light"
+            <a  class="nav-link waves-effect waves-light"
             >Projects</a>
           </li>
           <li class="nav-item" *ngIf="flag">
-            <a href="#" class="nav-link waves-effect waves-light"
+            <a  class="nav-link waves-effect waves-light"
             >Tasks</a>
           </li>
           <li class="nav-item" *ngIf="!flag">
-            <a href="#" class="nav-link waves-effect waves-light" data-toggle="modal"
+            <a  class="nav-link waves-effect waves-light" data-toggle="modal"
                (click)="_openModal(newProject)"
             >New Project</a
             >
           </li>
           <li class="nav-item " *ngIf="!flag">
-            <a href="#" class="nav-link waves-effect waves-light" data-toggle="modal"
+            <a  class="nav-link waves-effect waves-light" data-toggle="modal"
                (click)="_openModal(newTask)"
             >New Task</a
             >
           </li>
           <li class="nav-item " *ngIf="!flag">
-            <a href="#" class="nav-link waves-effect waves-light"
+            <a  class="nav-link waves-effect waves-light"
                data-toggle="modal" (click)="_openModal(newUser)">New User</a
             >
           </li>
@@ -59,8 +59,8 @@
 
         <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" type="text" placeholder="Search task"
-                 aria-label="Search" [(ngModel)]="searchStr" >
-          <button class="btn btn-outline-info waves-effect waves-light my-3 my-sm-0"  (click)="search()">Search</button>
+                 aria-label="Search" (change)="changeF($event.target.value)">
+          <button class="btn btn-outline-info waves-effect waves-light my-3 my-sm-0"  [routerLink]="['/search/',searchString]">Search</button>
         </form>
 
         <div class="btn-group">
@@ -179,7 +179,7 @@
           <select class="form-control" id="executor" name="execut"
                   (change)="onChangeExecutor($event)"
                    [(ngModel)]="task.executor">
-            <option *ngFor="let executor of users" [value]="executor.idUser">{{executor.name}} {{executor.surname}}</option>
+            <option *ngFor="let executor of userViewModels" [value]="executor.idUser">{{executor.name}} {{executor.surname}}</option>
           </select>
         </div>
         <div class="form-group">

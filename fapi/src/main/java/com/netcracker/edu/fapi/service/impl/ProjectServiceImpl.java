@@ -1,9 +1,6 @@
 package com.netcracker.edu.fapi.service.impl;
 
-import com.netcracker.edu.fapi.models.Project;
-import com.netcracker.edu.fapi.models.ProjectViewModel;
-import com.netcracker.edu.fapi.models.Task;
-import com.netcracker.edu.fapi.models.User;
+import com.netcracker.edu.fapi.models.*;
 import com.netcracker.edu.fapi.service.ProjectService;
 import com.netcracker.edu.fapi.service.TaskService;
 import com.netcracker.edu.fapi.service.UserService;
@@ -39,7 +36,7 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectViewModel findProjectViewModelById(Long id) {
         ProjectViewModel projectViewModel = new ProjectViewModel(findById(id));
 
-        User user = userService.findById(projectViewModel.getProjectCreator());
+        UserViewModel user = userService.findById(projectViewModel.getProjectCreator());
         projectViewModel.setProjectCreatorName(user.getName());
         projectViewModel.setProjectCreatorSurname(user.getSurname());
 

@@ -38,6 +38,7 @@ public class TaskController {
         return taskService.findAllByName(name);
     }
 
+
     @RequestMapping(value = "/task/{id}", method = RequestMethod.GET)
     public Task getTaskById(@PathVariable String id) {
         return taskService.findById(Long.valueOf(id));

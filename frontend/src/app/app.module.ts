@@ -15,12 +15,12 @@ import {  MDBBootstrapModule }  from 'angular-bootstrap-md';
 import { CollapseModule } from 'ngx-bootstrap/collapse'
 import {CarouselComponent} from "./modules/header/carousel/carousel.component";
 import {FirstPageComponent} from "./modules/first-page/first_page.component";
-import  {NotFoundPageComponent} from "./modules/notFound/notFoundPage.component";
+import  {NotFoundPageComponent} from "./modules/not-found-page/not_found_page.component";
 import {ProjectComponent} from "./modules/project/component/project.component";
 import {TaskComponent} from "./modules/task/component/task.component";
 import {HeaderModule} from "./modules/header/head/header.module";
 import {AccountComponent} from "./modules/user/component/account.component";
-import {SearchResultComponent} from "./modules/search-result-table/search_result";
+import {SearchResultComponent} from "./modules/search-result-table/search_result.component";
 
 const appRoutes: Routes = [
   {path: "", component: FirstPageComponent},

@@ -8,7 +8,7 @@
           <hr class="hr-light"/>
           <h2 class="white-text fontRaleway m-4">Get started!</h2>
           <button class="btn btn-outline-white waves-effect waves-light" data-toggle="modal"
-                  (click) = "_openModal(LogIn)">
+                  (click)="_openModal(LogIn)">
             Log in <i class="fa fa-sign-in" aria-hidden="true"></i>
           </button>
         </div>
@@ -16,26 +16,26 @@
     </div>
   </div>
 
-<div class="carousel-inner">
-  <div class="carousel-item active">
-    <img class="d-block w-100" src="assets/img/back.jpg" alt="First slide">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img class="d-block w-100" src="assets/img/back.jpg" alt="First slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="assets/img/back2.jpg" alt="Second slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="assets/img/back3.jpg" alt="Second slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="assets/img/back4.jpg" alt="Second slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="assets/img/back5.jpg" alt="Second slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="assets/img/back6.jpg" alt="Second slide">
+    </div>
   </div>
-  <div class="carousel-item">
-    <img class="d-block w-100" src="assets/img/back2.jpg" alt="Second slide">
-  </div>
-  <div class="carousel-item">
-    <img class="d-block w-100" src="assets/img/back3.jpg" alt="Second slide">
-  </div>
-  <div class="carousel-item">
-    <img class="d-block w-100" src="assets/img/back4.jpg" alt="Second slide">
-  </div>
-  <div class="carousel-item">
-    <img class="d-block w-100" src="assets/img/back5.jpg" alt="Second slide">
-  </div>
-  <div class="carousel-item">
-    <img class="d-block w-100" src="assets/img/back6.jpg" alt="Second slide">
-  </div>
-</div>
 </div>
 
 
@@ -51,21 +51,30 @@
     <div class="container-fluid">
       <form>
         <div class="form-group">
-          <label for="loginInput">Login</label>
-          <input type="text" class="form-control" id="loginInput" placeholder="Login"
-                 required/>
-          <!-- <small id="loginHelp" class="form-text text-muted">Enter login</small> -->
+          <label>Login</label>
+          <input type="text" class="form-control" placeholder="User login" name="login" [(ngModel)]="account.login"
+                 #login="ngModel" required pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{6,12}$"/>
+          <div [hidden]="login.valid||login.untouched" class="alert alert-danger">
+            login is incorrect
+          </div>
         </div>
         <div class="form-group">
-          <label for="passwordInput">Password</label>
-          <input type="password" class="form-control" id="passwordInput" placeholder="Password" required/>
-          <!-- <small id="passwordHelp" class="form-text text-muted">Enter password</small> -->
+          <label>Password</label>
+          <input type="password" class="form-control" placeholder="User password"
+                 name="password" [(ngModel)]="account.password" #password="ngModel" required
+                 pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{6,12}$"/>
+          <div [hidden]="password.valid|| password.untouched" class="alert alert-danger">
+            Password is incorrect
+          </div>
         </div>
       </form>
     </div>
   </div>
+  <div class="alert alert-danger" *ngIf="!userService.account.name">Login or password is incorrect</div>
   <div class="modal-footer">
     <button class="btn btn-grey" data-dismiss="modal" (click)="_closeModal()">Close</button>
-    <button type="submit" class="btn btn-primary">Log in</button>
+    <button type="submit" class="btn btn-primary" [disabled]=" login.invalid || password.invalid"
+            (click)="authorization()">Log in
+    </button>
   </div>
 </ng-template>

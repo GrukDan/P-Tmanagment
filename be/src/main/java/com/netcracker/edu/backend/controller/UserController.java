@@ -32,9 +32,15 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @RequestMapping(value = "/user/{idUser}", method = RequestMethod.GET)
-    public ResponseEntity<User> getUserById(@PathVariable(name = "idUser") Long idUser) {
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
+    public ResponseEntity<User> getUserById(@PathVariable(name = "id") Long idUser) {
         User user = userService.findById(idUser);
+        return ResponseEntity.ok(user);
+    }
+
+    @RequestMapping(value = "/user/authorization", method = RequestMethod.POST)
+    public ResponseEntity<User> getUserByLoginAndPassword(@RequestBody User userAuthorization) {
+        User user = userService.findByLoginAndPassword(userAuthorization.getLogin(),userAuthorization.getPassword());
         return ResponseEntity.ok(user);
     }
 

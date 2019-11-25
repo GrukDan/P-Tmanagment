@@ -1,15 +1,10 @@
 import {Component, OnInit, TemplateRef} from "@angular/core";
-import {Project} from "../model/project";
-import {Task} from "../../task/model/task";
-import {User} from "../../user/model/user";
-import {BsModalRef, BsModalService} from "ngx-bootstrap";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {Subscription} from "rxjs";
-import {UserService} from "../../user/services/user.service";
 import {ProjectService} from "../services/project.service";
-import {TaskService} from "../../task/services/task.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Params} from "@angular/router";
 import {ProjectViewModel} from "../model/projectViewModel";
+import {Location} from "@angular/common";
 
 
 @Component({
@@ -27,13 +22,31 @@ export class ProjectComponent implements OnInit{
 
   constructor(private loadingService: Ng4LoadingSpinnerService,
               private activateRoute: ActivatedRoute,
-              private projectService:ProjectService,) {
+              private projectService:ProjectService,
+              private location:Location) {
+
+
+    // подписываемся на параметры
+    this.activateRoute.params.subscribe(
+      params => {
+        let id = +params['id'];
+        this.loadProject(params['id']);
+      }
+    );
+
+    //this.getProject();
   }
 
   ngOnInit(): void {
-    const id = this.activateRoute.snapshot.params['id'];
-    this.loadProject(id)
+//this.getProject();
+
   }
+
+  private getProject():void{
+    const id= +this.activateRoute.snapshot.paramMap.get('id');
+    this.loadProject(id);
+  }
+
 
   private loadProject(id): void {
     this.loadingService.show();
@@ -59,8 +72,5 @@ export class ProjectComponent implements OnInit{
   public refreshProject(): void{
   }
 
-public showTask(taskId){
-    location.href="task/"+taskId;
-}
 
 }

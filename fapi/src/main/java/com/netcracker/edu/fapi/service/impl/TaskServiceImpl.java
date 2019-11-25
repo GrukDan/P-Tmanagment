@@ -1,9 +1,6 @@
 package com.netcracker.edu.fapi.service.impl;
 
-import com.netcracker.edu.fapi.models.Project;
-import com.netcracker.edu.fapi.models.Task;
-import com.netcracker.edu.fapi.models.TaskViewModel;
-import com.netcracker.edu.fapi.models.User;
+import com.netcracker.edu.fapi.models.*;
 import com.netcracker.edu.fapi.service.ProjectService;
 import com.netcracker.edu.fapi.service.TaskService;
 import com.netcracker.edu.fapi.service.UserService;
@@ -33,16 +30,16 @@ public class TaskServiceImpl implements TaskService {
     public TaskViewModel findTaskViewModelById(Long  idTaskViewModel) {
         TaskViewModel taskViewModel = new TaskViewModel(findById(idTaskViewModel));
 
-        User executor = userService.findById(taskViewModel.getExecutorId());
+        UserViewModel executor = userService.findById(taskViewModel.getExecutorId());
         taskViewModel.setExecutorName(executor.getName());
         taskViewModel.setExecutorSurname(executor.getSurname());
 
-        User creator = userService.findById(taskViewModel.getTaskCreatorId());
+        UserViewModel creator = userService.findById(taskViewModel.getTaskCreatorId());
         taskViewModel.setTaskCreatorName(creator.getName());
         taskViewModel.setTaskCreatorSurname(creator.getSurname());
 
         Project project = projectService.findById(taskViewModel.getIdProject());
-        User[] executors = userService.findByIdProject(project.getIdProject()).toArray(new User[0]);
+        UserViewModel[] executors = userService.findByIdProject(project.getIdProject()).toArray(new UserViewModel[0]);
         taskViewModel.setExecutors(executors);
         return taskViewModel;
     }

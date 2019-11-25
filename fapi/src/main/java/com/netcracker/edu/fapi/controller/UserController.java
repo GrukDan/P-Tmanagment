@@ -1,6 +1,7 @@
 package com.netcracker.edu.fapi.controller;
 
 import com.netcracker.edu.fapi.models.User;
+import com.netcracker.edu.fapi.models.UserViewModel;
 import com.netcracker.edu.fapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -17,12 +18,12 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/users")
-    public List<User> getAllUsers() {
+    public List<UserViewModel> getAllUsers() {
         return userService.findAll();
     }
 
     @GetMapping("/login")
-    public User getUserByLogin(@RequestParam String login) {
+    public UserViewModel getUserByLogin(@RequestParam String login) {
         return userService.findByLogin(login);
     }
 
@@ -34,13 +35,17 @@ public class UserController {
     }
 
     @RequestMapping(value="/user/project/{id}",method = RequestMethod.GET)
-    public List<User> getUserByIdProject(@PathVariable String id) {
+    public List<UserViewModel> getUserByIdProject(@PathVariable String id) {
         return userService.findByIdProject(Long.valueOf(id));
     }
 
+    @RequestMapping(value="/user/authorization",method = RequestMethod.POST)
+    public UserViewModel getUserByLoginAndPassword(@RequestBody User user) {
+        return userService.findByLoginAndPassword(user);
+    }
 
     @RequestMapping(value="/user/{id}",method = RequestMethod.GET)
-    public User getUserById(@PathVariable String id) {
+    public UserViewModel getUserById(@PathVariable String id) {
         return userService.findById(Long.valueOf(id));
     }
 }

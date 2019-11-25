@@ -9,7 +9,7 @@ export class Task {
   dateOfCreation: string;
   idProject : string;
   dueDate: string;
-  update: string;
+  updated: string;
   description: string;
 
   static cloneBase(task: Task): Task {
@@ -24,7 +24,7 @@ export class Task {
     clonedTask.dateOfCreation = task.dateOfCreation;
     clonedTask.idProject = task.idProject;
     clonedTask.dueDate = task.dueDate;
-    clonedTask.update = task.update;
+    clonedTask.updated = task.updated;
     clonedTask.description = task.description;
     return clonedTask;
   }

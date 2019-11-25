@@ -2,6 +2,7 @@ package com.netcracker.edu.fapi.service.impl;
 
 import com.netcracker.edu.fapi.models.Task;
 import com.netcracker.edu.fapi.models.User;
+import com.netcracker.edu.fapi.models.UserViewModel;
 import com.netcracker.edu.fapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,32 +26,44 @@ public class UserServiceImpl implements UserService {
 //    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
-    public List<User> findByIdProject(Long idProject) {
+    public List<UserViewModel> findByIdProject(Long idProject) {
         RestTemplate restTemplate = new RestTemplate();
         User[] usersResponse = restTemplate.getForObject(backendServerUrl + "/api/users/idproject/" +  idProject, User[].class);
-        return usersResponse == null ? Collections.emptyList() : Arrays.asList(usersResponse);
+        UserViewModel[] userViewModelsResponse = new UserViewModel[usersResponse.length];
+        for(int i = 0; i< userViewModelsResponse.length;i++){
+            userViewModelsResponse[i] = new UserViewModel(usersResponse[i]);
+        }
+        return usersResponse == null ? Collections.emptyList() : Arrays.asList(userViewModelsResponse);
     }
 
 
     @Override
-    public User findById(Long idUser) {
+    public UserViewModel findById(Long idUser) {
         RestTemplate restTemplate = new RestTemplate();
-        User user = restTemplate.getForObject(backendServerUrl + "/api/user/" + idUser, User.class);
-        return user;
+        return new UserViewModel((restTemplate.getForObject(backendServerUrl + "/api/user/" + idUser, User.class)));
     }
 
     @Override
-    public User findByLogin(String login) {
+    public UserViewModel findByLogin(String login) {
         RestTemplate restTemplate = new RestTemplate();
-        User user = restTemplate.getForObject(backendServerUrl + "/api/user/login/" + login, User.class);
-        return user;
+        return new UserViewModel((restTemplate.getForObject(backendServerUrl + "/api/user/login/" + login, User.class)));
     }
 
     @Override
-    public List<User> findAll() {
+    public UserViewModel findByLoginAndPassword(User user) {
+        RestTemplate restTemplate = new RestTemplate();
+        return new UserViewModel(restTemplate.postForEntity(backendServerUrl + "/api/user/authorization" , user, User.class).getBody());
+    }
+
+    @Override
+    public List<UserViewModel> findAll() {
         RestTemplate restTemplate = new RestTemplate();
         User[] usersResponse = restTemplate.getForObject(backendServerUrl + "/api/users", User[].class);
-        return usersResponse == null ? Collections.emptyList() : Arrays.asList(usersResponse);
+        UserViewModel[] userViewModelsResponse = new UserViewModel[usersResponse.length];
+        for(int i = 0; i< userViewModelsResponse.length;i++){
+            userViewModelsResponse[i] = new UserViewModel(usersResponse[i]);
+        }
+        return usersResponse == null ? Collections.emptyList() : Arrays.asList(userViewModelsResponse);
     }
 
     @Override

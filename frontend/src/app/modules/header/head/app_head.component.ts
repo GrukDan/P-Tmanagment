@@ -10,11 +10,12 @@ import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {Subscription} from "rxjs";
 import {Validators, FormBuilder, FormGroup, FormControl} from '@angular/forms';
 import {ActivatedRoute} from "@angular/router";
+import {UserViewModel} from "../../user/model/userViewModel";
 
 
 @Component({
   selector: 'appHead',
-  templateUrl: "./appHead.html",
+  templateUrl: "./app_head.html",
   styleUrls: ['./style.css']
 })
 export class HeadComponent implements OnInit {
@@ -24,16 +25,15 @@ export class HeadComponent implements OnInit {
   public user: User = new User();
 
   public projects: Project[] = [];
-  public users: User[] = [];
+  public userViewModels: UserViewModel[] = [];
 
   public flag: boolean = false;
   public modalRef: BsModalRef;
-  public taskForm: FormGroup;
   public role: string;
   public priority: string;
   public addFlag: boolean = false;  //флаг на проверку введенных данных при добавлении
 
-  public searchStr:string;
+  public searchString:string = "";
   private subscriptions: Subscription[] = [];
 
   constructor(private modalService: BsModalService,
@@ -66,9 +66,9 @@ export class HeadComponent implements OnInit {
     // Get data from BillingAccountService
     this.subscriptions.push(this.userService.getUsers().subscribe(users => {
       // Parse json response into local array
-      this.users = users as User[];
+      this.userViewModels = users as User[];
       // Check data in console
-      console.log(this.users);// don't use console.log in angular :)
+      console.log(this.userViewModels);// don't use console.log in angular :)
       this.loadingService.hide();
     }));
   }
@@ -81,7 +81,6 @@ export class HeadComponent implements OnInit {
   public _closeModal(): void {
     this.modalRef.hide();
   }
-
 
   public addUser(): void {
     this.loadingService.show();
@@ -103,8 +102,8 @@ export class HeadComponent implements OnInit {
   public addTask(): void {
     this.task.status = "OPEN"
     this.task.dateOfCreation = Date.now().toString();
-    this.task.update = Date.now().toString();
-    this.task.taskCreator = this.users[0].idUser;
+    this.task.updated = Date.now().toString();
+    this.task.taskCreator = this.userViewModels[0].idUser;
     this.loadingService.show();
     this.subscriptions.push(this.taskService.saveTask(this.task).subscribe(() => {
       this._closeModal();
@@ -117,7 +116,6 @@ export class HeadComponent implements OnInit {
     if (this.role == "Project manager") this.user.role = "PROJECT_MANAGER";
     if (this.role == "Developer") this.user.role = "DEVELOPER";
     if (this.role == "Tester") this.user.role = "TESTER";
-    console.log(this.user);
   }
 
   public setPriority() {
@@ -139,9 +137,7 @@ export class HeadComponent implements OnInit {
   }
 
 
-  public search(){
-
-    console.log(this.searchStr);
-    location.href="search/"+ this.searchStr;
+  public changeF(value: string): void {
+    this.searchString = value;
   }
 }
