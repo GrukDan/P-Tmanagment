@@ -1,9 +1,9 @@
 <header>
 
-  <nav class="navbar  navbar-expand-lg  navbar-dark bg-dark  ">
+  <nav class="navbar  navbar-expand-lg  navbar-dark bg-dark">
     <!--PROJECT NAVIGATION-->
-    <input type="checkbox" id="nav-toggle" hidden>
-    <nav class="nav2">
+    <input type="checkbox" id="nav-toggle" hidden >
+    <nav class="nav2" *ngIf="userService.account?.idUser!=null">
       <label for="nav-toggle" class="nav-toggle" onclick></label>
       <h3 class="logo">
         PROJECTS
@@ -30,47 +30,42 @@
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
-          <li class="nav-item" *ngIf="flag">
-            <a  class="nav-link waves-effect waves-light"
-            >Projects</a>
-          </li>
-          <li class="nav-item" *ngIf="flag">
-            <a  class="nav-link waves-effect waves-light"
-            >Tasks</a>
-          </li>
-          <li class="nav-item" *ngIf="!flag">
+          <li class="nav-item" *ngIf="userService.account?.idUser!=null">
             <a  class="nav-link waves-effect waves-light" data-toggle="modal"
                (click)="_openModal(newProject)"
             >New Project</a
             >
           </li>
-          <li class="nav-item " *ngIf="!flag">
+          <li class="nav-item " *ngIf="userService.account?.idUser!=null">
             <a  class="nav-link waves-effect waves-light" data-toggle="modal"
                (click)="_openModal(newTask)"
             >New Task</a
             >
           </li>
-          <li class="nav-item " *ngIf="!flag">
+          <li class="nav-item " *ngIf="userService.account?.idUser!=null">
             <a  class="nav-link waves-effect waves-light"
                data-toggle="modal" (click)="_openModal(newUser)">New User</a
             >
           </li>
+          <li class="nav-item " *ngIf="userService.account?.idUser!=null">
+            <a  class="nav-link waves-effect waves-light"
+                data-toggle="modal" [routerLink]="['accounts']" >Accounts</a
+            >
+          </li>
         </ul>
-
-        <form class="form-inline my-2 my-lg-0">
+        <form class="form-inline my-2 my-lg-0" >
           <input class="form-control mr-sm-2" type="text" placeholder="Search task"
-                 aria-label="Search" (change)="changeF($event.target.value)">
-          <button class="btn btn-outline-info waves-effect waves-light my-3 my-sm-0"  [routerLink]="['/search/',searchString]">Search</button>
+                 [disabled]="userService?.account ? false : true"
+                 aria-label="Search" (keydown.enter)="search($event.target.value)">
         </form>
-
-        <div class="btn-group">
+        <div class="btn-group" *ngIf="userService.account?.idUser!=null">
           <button type="button" class="btn btn-outline-info dropdown-toggle" data-toggle="dropdown"
                   aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-user"></i>
           </button>
           <div class="dropdown-menu">
-            <a class="dropdown-item" href="#"><i class="fa fa-user-circle" aria-hidden="true"></i> My account</a>
-            <a class="dropdown-item" href="#"><i class="fa fa-envelope-open" aria-hidden="true"></i> My Messages</a>
+            <a class="dropdown-item"[routerLink]="['/account',userService.account.idUser]"><i class="fa fa-user-circle" aria-hidden="true"></i> My account</a>
+            <a class="dropdown-item" ><i class="fa fa-envelope-open" aria-hidden="true"></i> My Messages</a>
 
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#"><i class="fa fa-sign-out" aria-hidden="true"></i> Log out</a>
@@ -110,16 +105,6 @@
                  name="projectCode" [(ngModel)]="project.projectCode" #projectCode="ngModel"
                  required/>
           <div [hidden]="projectCode.valid || projectCode.untouched" class="alert alert-danger">
-            Pls set project code <!--Easy way to create client validation-->
-          </div>
-        </div>
-        <div class="form-group">
-          <label for="projectCreatorInput">Project creator ID</label>
-          <input type="text" class="form-control" id="projectCreatorInput"
-                 placeholder="Project code"
-                 name="projectCode" [(ngModel)]="project.projectCreator" #projectCreator="ngModel"
-                 required/>
-          <div [hidden]="projectCreator.valid || projectCreator.untouched" class="alert alert-danger">
             Pls set project code <!--Easy way to create client validation-->
           </div>
         </div>

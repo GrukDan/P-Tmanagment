@@ -4,67 +4,73 @@
       <div class="col">
         <div class="row text-justify  mb-3 mr-4 mt-3">
           <div class="col">
-            <span><h3>User name:</h3></span><span><span *ngIf="!editMode">{{user.name}}</span></span>
-            <input type="text" class="form-control" *ngIf="editMode" [(ngModel)]="user.name">
+            <span><h3>User name:</h3></span><span><span *ngIf="!editMode">{{account.name}}</span></span>
+            <input type="text" class="form-control" *ngIf="editMode" [(ngModel)]="account.name">
           </div>
         </div>
         <div class="row text-justify  mb-3 mr-4">
           <div class="col">
-            <span><h3>User surname:</h3></span><span><span *ngIf="!editMode">{{user.surname}}</span></span>
-            <input type="text" class="form-control" *ngIf="editMode" [(ngModel)]="user.surname">
+            <span><h3>User surname:</h3></span><span><span *ngIf="!editMode">{{account.surname}}</span></span>
+            <input type="text" class="form-control" *ngIf="editMode" [(ngModel)]="account.surname">
           </div>
         </div>
         <div class="row text-justify mb-3 mr-4">
           <div class="col">
-            <span><h3>Email:</h3></span><span><span *ngIf="!editMode">{{user.email}}</span></span>
-            <input type="text" class="form-control" *ngIf="editMode" [(ngModel)]="user.email">
+            <span><h3>Email:</h3></span><span><span *ngIf="!editMode">{{account.email}}</span></span>
+            <input type="text" class="form-control" *ngIf="editMode" [(ngModel)]="account.email">
           </div>
         </div>
-        <div class="row text-justify mb-3 mr-4">
-          <div class="col">
-            <span><h3>Role:</h3></span><span><span *ngIf="!editMode">{{user.role}}</span></span>
-            <input type="text" class="form-control" *ngIf="editMode" [(ngModel)]="user.role">
-          </div>
-        </div>
-<!--        <div class="row text-justify mb-3 mr-4">-->
-<!--          <div class="col">-->
-<!--            <span><h3>Login:</h3></span><span><span *ngIf="!editMode">{{user.login}}</span></span>-->
-<!--            <input type="text" class="form-control" *ngIf="editMode" [(ngModel)]="user.login">-->
-<!--          </div>-->
-<!--        </div>-->
-<!--        <div class="row text-justify mb-3 mr-4">-->
-<!--          <div class="col">-->
-<!--            <span><h3>Password:</h3></span><span><span *ngIf="!editMode">{{user.password}}</span></span>-->
-<!--            <input type="password" class="form-control" *ngIf="editMode" [(ngModel)]="user.password">-->
-<!--          </div>-->
-<!--        </div>-->
+
+        <!--        <div class="row text-justify mb-3 mr-4">-->
+        <!--          <div class="col">-->
+        <!--            <span><h3>Login:</h3></span><span><span *ngIf="!editMode">{{user.login}}</span></span>-->
+        <!--            <input type="text" class="form-control" *ngIf="editMode" [(ngModel)]="user.login">-->
+        <!--          </div>-->
+        <!--        </div>-->
+        <!--        <div class="row text-justify mb-3 mr-4">-->
+        <!--          <div class="col">-->
+        <!--            <span><h3>Password:</h3></span><span><span *ngIf="!editMode">{{user.password}}</span></span>-->
+        <!--            <input type="password" class="form-control" *ngIf="editMode" [(ngModel)]="user.password">-->
+        <!--          </div>-->
+        <!--        </div>-->
       </div>
 
-      <div class="col">
-
-        <div class="row text-justify mr-4 mt-4">
+      <div class="col ">
+        <div class="row text-justify mb-3 mr-4 mt-3">
           <div class="col">
-            <h3>Assign projects:</h3>
-            <div class="list-group-flush fontRaleway" *ngIf="projects.length>0; then show else no_projects;">
-            </div>
-            <ng-template #show>
-              <a href="#" class="list-group-item-muted" *ngFor="let project of projects">
-                <h4 class="list-group-item-heading">{{project.projectCode}}</h4>
-                <p class="list-group-item-text text-white">{{project.projectName}}</p>
-              </a>
-            </ng-template>
-            <ng-template #no_projects>
-              <a  class="list-group-item-muted">
-                <h4 class="list-group-item-heading">No assign projects</h4>
-              </a>
-            </ng-template>
+            <span><h3>Assign project:</h3></span>
+            <span *ngIf="!assignProject?.idProject && !editMode;then no_projects">
+            </span>
+            <span *ngIf="!editMode && assignProject?.idProject"><a
+              [routerLink]="['/project',account?.assignProject]">{{assignProject.projectName}}</a>
+            </span>
+            <select class="form-control" id="executor" name="execut"
+                    *ngIf="editMode"
+                    (blur)="assignProjectBlur()"
+                    [(ngModel)]="account.assignProject">
+              <option *ngFor="let project of projects" [value]="project.idProject">{{project.projectName}}</option>
+            </select>
+          </div>
+          <ng-template #no_projects>
+            <a class="list-group-item-muted">
+              <h4 class="list-group-item-heading">No assign projects</h4>
+            </a>
+          </ng-template>
+        </div>
+        <div class="row text-justify mb-3 mr-4">
+          <div class="col">
+            <span><h3>Role:</h3></span><span><span *ngIf="!editMode">{{account.role}}</span></span>
+            <input type="text" class="form-control" *ngIf="editMode" [(ngModel)]="account.role">
+          </div>
+        </div>
+        <div class="row text-justify mb-3 mr-4">
+          <div class="col">
+          <button class="btn btn-primary " (click)="edit()">{{editMode ? "Save" : "Edit account"}}</button>
+          <button class="btn btn-primary" (click)="deleteAccount()">Delete account</button>
           </div>
         </div>
       </div>
     </div>
-
-    <button class="btn btn-primary " (click)="edit()">{{editMode ? "Save" : "Edit user"}}</button>
-    <button class="btn btn-primary">Delete account</button>
   </div>
 
 
@@ -73,31 +79,34 @@
     <table class="table table-hover table-dark ">
       <thead>
       <tr>
-        <th scope="col">Task code</th>
+        <th scope="col" class="text-center">Task code</th>
         <th scope="col" class="waves-button">Task name</th>
         <th scope="col" class="waves-button">Priority</th>
         <th scope="col" class="waves-button">Status</th>
         <th scope="col" class="waves-button">Date of creation</th>
         <th scope="col" class="waves-button">Due date</th>
+        <th scope="col" ></th>
       </tr>
       </thead>
       <tbody *ngIf="tasks.length>0; then table else void_table;">
       </tbody>
       <ng-template #table>
-        <tr *ngFor="let task of tasks">
+        <tr *ngFor="let task of tasks" class="text-center">
           <th scope="row">{{task.taskCode}}</th>
           <td>{{task.taskName}}</td>
           <td>{{task.priority}}</td>
           <td>{{task.status}}</td>
-          <td>{{task.dateOfCreation}}</td>
-          <td>{{task.dueDate}}</td>
+          <td>{{task.dateOfCreation | date}}</td>
+          <td>{{task.dueDate | date}}</td>
+          <td class="text-center"><button class="btn btn-primary" [routerLink]="['/task/',task.idTask]" >More</button></td>
         </tr>
       </ng-template>
       <ng-template #void_table>
         <tr>
-          <td colspan="6">No tasks have been created for this project.</td>
+          <td colspan="7">No tasks have been created for this project.</td>
         </tr>
       </ng-template>
     </table>
   </div>
 </div>
+

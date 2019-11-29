@@ -15,19 +15,21 @@ import {  MDBBootstrapModule }  from 'angular-bootstrap-md';
 import { CollapseModule } from 'ngx-bootstrap/collapse'
 import {CarouselComponent} from "./modules/header/carousel/carousel.component";
 import {FirstPageComponent} from "./modules/first-page/first_page.component";
-import  {NotFoundPageComponent} from "./modules/not-found-page/not_found_page.component";
+import  {NotFoundPageComponent} from "./modules/not-found-page/not-found-page.component";
 import {ProjectComponent} from "./modules/project/component/project.component";
 import {TaskComponent} from "./modules/task/component/task.component";
 import {HeaderModule} from "./modules/header/head/header.module";
 import {AccountComponent} from "./modules/user/component/account.component";
-import {SearchResultComponent} from "./modules/search-result-table/search_result.component";
+import {SearchResultComponent} from "./modules/search-result-table/search-result.component";
+import {AccountsTableComponent} from "./modules/accounts/accounts-table.component";
 
 const appRoutes: Routes = [
   {path: "", component: FirstPageComponent},
   {path: 'project/:id', component: ProjectComponent},
   {path: 'task/:id', component: TaskComponent},
-  {path: 'account', component: AccountComponent},
+  {path: 'account/:id', component: AccountComponent},
   {path: 'search/:search', component: SearchResultComponent},
+  {path: 'accounts', component: AccountsTableComponent},
   {path: "**", component: NotFoundPageComponent}
 ];
 

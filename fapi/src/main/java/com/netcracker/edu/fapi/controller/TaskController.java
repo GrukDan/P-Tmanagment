@@ -23,9 +23,9 @@ public class TaskController {
         return taskService.findAll();
     }
 
-    @RequestMapping(value = "/tasks/user/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/tasks/executor/{id}", method = RequestMethod.GET)
     public List<Task> getTasksByIdUser(@PathVariable String id) {
-        return taskService.findByIdUser(Long.valueOf(id));
+        return taskService.findByIdExecutor(Long.valueOf(id));
     }
 
     @RequestMapping(value = "/tasks/project/{id}", method = RequestMethod.GET)
@@ -62,5 +62,13 @@ public class TaskController {
     @RequestMapping(value = "/task/delete/{id}", method = RequestMethod.DELETE)
     public void deleteTaskById(@PathVariable String id) {
         taskService.deleteTask(Long.valueOf(id));
+    }
+
+
+
+    @RequestMapping(value = "/tasks/project/name/sort/priority{projectId}{count}", method = RequestMethod.GET)
+    public void getTaskViewModelByIdProjectSortedByPriority(@RequestParam(value = "projectId") String projectId,@RequestParam(value = "count") String count) {
+       // return taskService.findTaskViewModelById(Long.valueOf(id));
+        System.out.println(projectId + "=============" + count);
     }
 }

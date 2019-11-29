@@ -11,5 +11,8 @@ public interface UserService {
     UserViewModel findByLogin(String login);
     UserViewModel findByLoginAndPassword(User user);
     List<UserViewModel> findAll();
+    List<UserViewModel> findAllSortByName(int page,int size,int direction);
     User save(User user);
+    void deleteById(Long idUser);
+    UserViewModel saveUserViewModel(UserViewModel userViewModel);
 }

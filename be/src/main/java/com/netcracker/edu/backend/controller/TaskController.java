@@ -19,8 +19,8 @@ public class TaskController {
     @GetMapping("/tasks")
     public List<Task> getAllTasks(){return taskService.findAll();}
 
-    @RequestMapping(value = "/tasks/user/{id}", method = RequestMethod.GET)
-    public List<Task> getAllTasksByIdUser(@PathVariable(name = "id") Long id){return taskService.findByIdUser(id);}
+    @RequestMapping(value = "/tasks/executor/{id}", method = RequestMethod.GET)
+    public List<Task> getTaskByIdExecutor(@PathVariable(name = "id") Long id){return taskService.findByIdExecutor(id);}
 
     @RequestMapping(value = "/tasks/project/{id}", method = RequestMethod.GET)
     public List<Task> getAllTasksByIdProject(@PathVariable(name = "id") Long id){return taskService.findByIdProject(id);}
@@ -30,7 +30,6 @@ public class TaskController {
 
     @RequestMapping(value="/task",method = RequestMethod.POST)
     public Task save(@RequestBody Task task){
-        System.out.println(task.toString());
         return taskService.save(task);
     }
 

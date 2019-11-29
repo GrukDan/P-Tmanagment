@@ -33,7 +33,9 @@
           </div>
           <div class="row text-justify mb-3 mr-4">
             <div class="col">
-              <span><h3>Project creator:</h3></span><span><span >{{projectViewModel.projectCreatorName}} {{projectViewModel.projectCreatorSurname}}</span></span>
+              <span><h3>Project creator:</h3></span><span><span >
+              <a [routerLink]="['/account/',projectViewModel.projectCreator]">{{projectViewModel.projectCreatorName}} {{projectViewModel.projectCreatorSurname}}
+              </a></span></span>
             </div>
           </div>
         </div>
@@ -58,23 +60,23 @@
     <tr>
       <th scope="col" class="text-center">Task code</th>
       <th scope="col" class="waves-button" >Task name</th>
-      <th scope="col" class="waves-button">Priority</th>
+      <th scope="col" class="waves-button" (click)="sortByPriority()">Priority</th>
       <th scope="col" class="waves-button" >Status</th>
       <th scope="col" class="waves-button" >Date of creation</th>
       <th scope="col" class="waves-button" >Due date</th>
     </tr>
     </thead>
-    <tbody *ngIf="projectViewModel?.tasks?.length>0; then table else void_table;">
+    <tbody *ngIf="tasks?.length>0; then table else void_table;">
     </tbody>
     <ng-template #table>
-      <tr *ngFor="let task of projectViewModel.tasks">
-        <td class="text-center">{{task.taskCode}}</td>
-        <td class="text-center">{{task.taskName}}</td>
-        <td class="text-center">{{task.priority}}</td>
-        <td class="text-center">{{task.status}}</td>
-        <td class="text-center">{{task.dateOfCreation | date}}</td>
-        <td class="text-center">{{task.dueDate | date}}</td>
-        <td class="text-center"><button class="btn btn-primary" [routerLink]="['/task/',task.idTask]" >More</button></td>
+      <tr *ngFor="let task of tasks" class="text-center">
+        <td>{{task.taskCode}}</td>
+        <td>{{task.taskName}}</td>
+        <td>{{task.priority}}</td>
+        <td>{{task.status}}</td>
+        <td>{{task.dateOfCreation | date}}</td>
+        <td>{{task.dueDate | date}}</td>
+        <td><button class="btn btn-primary" [routerLink]="['/task/',task.idTask]" >More</button></td>
       </tr>
     </ng-template>
     <ng-template #void_table>

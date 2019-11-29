@@ -3,7 +3,7 @@
   <div class=" carousel-caption d-none d-md-block mask rgba-black-strong ">
     <div class="container-fluid d-flex align-items-center justify-content-center h-100">
       <div class="row d-flex  justify-content-center text-center">
-        <div class="col-md-13">
+        <div class="col-md-13" *ngIf="!userService?.account">
           <h2 class="display-4 font-weight-bold white-text fontRaleway pt-5 mb-2">WELCOME</h2>
           <hr class="hr-light"/>
           <h2 class="white-text fontRaleway m-4">Get started!</h2>
@@ -63,18 +63,19 @@
           <input type="password" class="form-control" placeholder="User password"
                  name="password" [(ngModel)]="account.password" #password="ngModel" required
                  pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s).{6,12}$"/>
-          <div [hidden]="password.valid|| password.untouched" class="alert alert-danger">
+          <div [hidden]="password.valid || password.untouched" class="alert alert-danger">
             Password is incorrect
           </div>
         </div>
       </form>
     </div>
   </div>
-  <div class="alert alert-danger" *ngIf="!userService.account.name">Login or password is incorrect</div>
+  <div class="alert alert-danger" *ngIf="userService?.account">Login or password is incorrect</div>
+<!--  <div class="alert alert-danger" [hidden]="userService?.account.name">Login or password is incorrect</div>-->
   <div class="modal-footer">
     <button class="btn btn-grey" data-dismiss="modal" (click)="_closeModal()">Close</button>
-    <button type="submit" class="btn btn-primary" [disabled]=" login.invalid || password.invalid"
-            (click)="authorization()">Log in
+    <button type="submit" class="btn btn-primary" (click)="authorization()" [disabled]=" login.invalid || password.invalid|| password.untouched ||login.untouched"
+    >Log in
     </button>
   </div>
 </ng-template>

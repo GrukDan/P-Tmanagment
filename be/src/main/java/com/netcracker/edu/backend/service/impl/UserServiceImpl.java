@@ -5,6 +5,9 @@ import com.netcracker.edu.backend.repository.UserRepository;
 
 import com.netcracker.edu.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,7 +20,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
-        return (List<User>) userRepository.findAll();
+        return  userRepository.findAll();
+    }
+
+    @Override
+    public Page<User> findAll(int page, int size, boolean direction) {
+        if(direction)
+        return  userRepository.findAll(PageRequest.of(page,size, Sort.by(Sort.Direction.ASC,"name")));
+        else return userRepository.findAll(PageRequest.of(page,size, Sort.by(Sort.Direction.DESC,"name")));
     }
 
     @Override
@@ -27,7 +37,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findByLoginAndPassword(String login, String password) {
-        return userRepository.findByLoginAndPassword(login,password);
+        return userRepository.findByLoginAndPassword(login, password);
     }
 
     @Override
@@ -42,8 +52,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        System.out.println(user.toString());
         return userRepository.save(user);
+    }
+
+    @Override
+    public User saveUserViewModel(User user) {
+        User userToUpdate = userRepository.getOne(user.getIdUser());
+        userToUpdate.setName(user.getName());
+        userToUpdate.setSurname(user.getSurname());
+        userToUpdate.setEmail(user.getEmail());
+        userToUpdate.setRole(user.getRole());
+        userToUpdate.setAssignProject(user.getAssignProject());
+        return userRepository.save(userToUpdate);
     }
 
     @Override

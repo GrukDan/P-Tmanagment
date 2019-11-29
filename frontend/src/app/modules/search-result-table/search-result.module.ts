@@ -5,7 +5,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule} from '@angular/forms';
 import {RouterModule} from '@angular/router';
 import {TaskService} from "../task/services/task.service";
-import {SearchResultComponent} from "./search_result.component";
+import {SearchResultComponent} from "./search-result.component";
 
 
 @NgModule({

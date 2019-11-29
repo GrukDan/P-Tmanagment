@@ -60,7 +60,8 @@
 
           <div class="row text-justify mb-3 mr-4">
             <div class="col">
-              <span><h3>Task performer:</h3></span><span *ngIf="!editMode">{{taskViewModel.executorName}} {{taskViewModel.executorSurname}}</span>
+              <span><h3>Task performer:</h3></span><span *ngIf="!editMode"><a [routerLink]="['/account',taskViewModel.executorId]">
+              {{taskViewModel.executorName}} {{taskViewModel.executorSurname}}</a></span>
               <select class="form-control" id="executor" name="execut"
                       *ngIf="editMode"
                       (change)="onChangeExecutor($event)"
@@ -71,7 +72,8 @@
           </div>
           <div class="row text-justify mb-3 mr-4">
             <div class="col">
-              <span><h3>Task creator:</h3></span><span>{{taskViewModel.taskCreatorName}} {{taskViewModel.taskCreatorSurname}}</span>
+              <span><h3>Task creator:</h3></span><span><a [routerLink]="['/account',taskViewModel.taskCreatorId]">
+              {{taskViewModel.taskCreatorName}} {{taskViewModel.taskCreatorSurname}}</a></span>
             </div>
           </div>
         </div>

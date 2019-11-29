@@ -25,7 +25,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> findByIdUser(Long idUser) {
+    public List<Task> findByIdExecutor(Long idUser) {
         return taskRepository.findByExecutor(idUser);
     }
 
@@ -44,6 +44,11 @@ public class TaskServiceImpl implements TaskService {
         return taskRepository.findByIdTask(idTask);
     }
 
+//    @Override
+//    public Task findById(Long idTask) {
+//        taskRepository.findAll(())
+//        return taskRepository.findByIdTask(idTask);
+//    }
 
     @Override
     public Task findByCode(String code) {

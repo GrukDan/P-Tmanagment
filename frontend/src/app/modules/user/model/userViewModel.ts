@@ -4,4 +4,5 @@ export class  UserViewModel {
   surname: string;
   email: string;
   role: string;
+  assignProject:string;
 }

@@ -9,13 +9,13 @@ import {TaskService} from "../../task/services/task.service";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {Subscription} from "rxjs";
 import {Validators, FormBuilder, FormGroup, FormControl} from '@angular/forms';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {UserViewModel} from "../../user/model/userViewModel";
 
 
 @Component({
   selector: 'appHead',
-  templateUrl: "./app_head.html",
+  templateUrl: "./app-head.html",
   styleUrls: ['./style.css']
 })
 export class HeadComponent implements OnInit {
@@ -33,7 +33,6 @@ export class HeadComponent implements OnInit {
   public priority: string;
   public addFlag: boolean = false;  //флаг на проверку введенных данных при добавлении
 
-  public searchString:string = "";
   private subscriptions: Subscription[] = [];
 
   constructor(private modalService: BsModalService,
@@ -41,41 +40,32 @@ export class HeadComponent implements OnInit {
               private activateRoute: ActivatedRoute,
               private userService: UserService,
               private projectService: ProjectService,
-              private taskService: TaskService) {
+              private taskService: TaskService,
+              private router: Router) {
   }
 
   ngOnInit() {
     this.loadProjects();
-    this.loadUsers();
   }
 
   private loadProjects(): void {
     this.loadingService.show();
-    // Get data from BillingAccountService
     this.subscriptions.push(this.projectService.getProjects().subscribe(projects => {
-      // Parse json response into local array
       this.projects = projects as Project[];
-      // Check data in console
-      console.log(this.projects);// don't use console.log in angular :)
       this.loadingService.hide();
     }));
   }
 
   private loadUsers(): void {
     this.loadingService.show();
-    // Get data from BillingAccountService
-    this.subscriptions.push(this.userService.getUsers().subscribe(users => {
-      // Parse json response into local array
-      this.userViewModels = users as User[];
-      // Check data in console
-      console.log(this.userViewModels);// don't use console.log in angular :)
+    this.subscriptions.push(this.userService.getUserByIdAssignProject(this.task.idProject).subscribe(users => {
+      this.userViewModels = users as UserViewModel[];
       this.loadingService.hide();
     }));
   }
 
   public _openModal(template: TemplateRef<any>): void {
-    this.modalRef = this.modalService.show(template); // and when the user clicks on the button to open the popup
-                                                      // we keep the modal reference and pass the template local name to the modalService.
+    this.modalRef = this.modalService.show(template);
   }
 
   public _closeModal(): void {
@@ -92,7 +82,7 @@ export class HeadComponent implements OnInit {
 
   public addProject(): void {
     this.loadingService.show();
-    console.log(this.project);
+    this.project.projectCreator = this.userService.account.idUser;
     this.subscriptions.push(this.projectService.saveProject(this.project).subscribe(() => {
       this._closeModal();
       this.loadingService.hide();
@@ -134,10 +124,10 @@ export class HeadComponent implements OnInit {
     let projectCode = this.projects.find(item=>item.idProject==val.target.value).projectCode + "-";
     this.task.taskCode = projectCode;
     this.task.idProject = val.target.value;
+    this.loadUsers();
   }
 
-
-  public changeF(value: string): void {
-    this.searchString = value;
+  public search(value: string): void {
+    this.router.navigate(['/search', value]);
   }
 }

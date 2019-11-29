@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Task} from "../model/task";
 import {TaskViewModel} from "../model/taskViewModel";
@@ -22,7 +22,7 @@ export class TaskService { //todo create interface
   }
 
   getTasksByNameSortByName(taskName:string): Observable<Task[]> {
-    return this.http.get<Task[]>('/api/tasks/name/sort/name' + taskName);
+    return this.http.get<Task[]>('/api/tasks/name' + taskName);
   }
 
   saveTask(task: Task): Observable<Task> {
@@ -48,8 +48,15 @@ export class TaskService { //todo create interface
   getTaskByIdProject(id: string): Observable<Task[]> {
     return this.http.get<Task[]>('/api/tasks/project/' + id);
   }
-  getTaskByIdUser(id: string): Observable<Task> {
-    return this.http.get<Task>('/api/tasks/user/' + id);
+
+  getTaskByIdProjectSortedByPrioruty(id: string,count:number): Observable<Task[]> {
+    return this.http.get<Task[]>('/api/tasks/project/name/sort/priority' ,{
+      params: new HttpParams().set('projectId',id).set('count',count.toString())
+  });
+  }
+
+  getTaskByIdExecutor(id: string): Observable<Task[]> {
+    return this.http.get<Task[]>('/api/tasks/executor/' + id);
   }
 
 }

@@ -1,7 +1,7 @@
 import {Component, TemplateRef} from "@angular/core";
 import {BsModalRef, BsModalService} from "ngx-bootstrap";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../user/services/user.service";
 import {User} from "../../user/model/user";
 import {UserViewModel} from "../../user/model/userViewModel";
@@ -12,18 +12,18 @@ import {UserViewModel} from "../../user/model/userViewModel";
 })
 export class CarouselComponent{
 
-  public  userViewModel:UserViewModel = new UserViewModel();
+  public  userViewModel:UserViewModel;
   public account:User = new User();
   public modalRef: BsModalRef;
 
   constructor(private modalService: BsModalService,
               private loadingService: Ng4LoadingSpinnerService,
               private activateRoute: ActivatedRoute,
-              private userService: UserService,){}
+              private userService: UserService,
+              private router: Router){}
 
   public _openModal(template: TemplateRef<any>): void {
-    this.modalRef = this.modalService.show(template); // and when the user clicks on the button to open the popup
-                                                      // we keep the modal reference and pass the template local name to the modalService.
+    this.modalRef = this.modalService.show(template);
   }
 
   public _closeModal(): void {
@@ -31,11 +31,14 @@ export class CarouselComponent{
   }
 
 
-  public authorization():boolean{
-    console.log(this.account);
-    this.userViewModel = this.userService.authorization(this.account);
-    //console.log(this.userViewModel);
-    console.log(this.userService.account.name);
-    return this.userViewModel?true:false;
+  public authorization():void{
+    this.userService.authorization(this.account).subscribe(user => {
+      this.userViewModel = user;
+
+      if (this.userViewModel.name) {
+        this._closeModal();
+        this.router.navigate(['/account',this.userService.account.idUser]);
+      }
+    });
   }
 }

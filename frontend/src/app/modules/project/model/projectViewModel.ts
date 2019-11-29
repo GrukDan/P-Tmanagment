@@ -5,7 +5,7 @@ export class ProjectViewModel {
   projectName: string;
   projectCode: string;
   dateCompletion: string;
-  projectCreator: string;
+  projectCreator: string; //id
   readinessDegree: number;
   description: string;
 

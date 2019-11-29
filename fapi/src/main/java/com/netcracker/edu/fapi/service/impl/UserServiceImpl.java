@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 //import org.springframework.security.core.userdetails.UserDetailsService;
 //import org.springframework.security.core.userdetails.UsernameNotFoundException;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -67,11 +68,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserViewModel> findAllSortByName(int page, int size, int direction) {
+        System.out.println(page + "===" + size + "===" + direction);
+        RestTemplate restTemplate = new RestTemplate();
+        Page<User> usersResponse = restTemplate.getForObject(backendServerUrl + "/api/users/name/" + page + "/" + size + "/" + direction, Page.class);
+        //User[] usersResponse = restTemplate.getForObject(backendServerUrl + "/api/users/name/" + page + "/" + size + "/" + direction, User[].class);
+        System.out.println(usersResponse.toString());
+        List userViewModelsResponse = new ArrayList<UserViewModel>();
+        usersResponse.forEach(user -> {
+            userViewModelsResponse.add(user);
+        });
+        return usersResponse == null ? Collections.emptyList() : userViewModelsResponse;
+    }
+
+    @Override
     public User save(User user) {
         System.out.println(user.toString());
         // user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.postForEntity(backendServerUrl + "/api", user, User.class).getBody();
     }
+
+    @Override
+    public void deleteById(Long id) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.delete(backendServerUrl + "/api/user/delete/" + id);
+    }
+
+    @Override
+    public UserViewModel saveUserViewModel(UserViewModel userViewModel) {
+        System.out.println(userViewModel.toString());
+        // user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        RestTemplate restTemplate = new RestTemplate();
+        return new UserViewModel(restTemplate.postForEntity(backendServerUrl + "/api/userviewmodel", userViewModel.getUser(), User.class).getBody());
+    }
+
+
 
 }

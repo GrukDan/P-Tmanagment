@@ -66,7 +66,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<Project> findAll() {
-        System.out.println("get all");
         RestTemplate restTemplate = new RestTemplate();
         Project[] projectsResponse = restTemplate.getForObject(backendServerUrl + "/api/projects", Project[].class);
         return projectsResponse == null ? Collections.emptyList() : Arrays.asList(projectsResponse);

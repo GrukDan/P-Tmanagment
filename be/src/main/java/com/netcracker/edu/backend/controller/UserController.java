@@ -3,6 +3,7 @@ package com.netcracker.edu.backend.controller;
 import com.netcracker.edu.backend.entity.User;
 import com.netcracker.edu.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,12 +15,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @RequestMapping(value = "/user/project/{idProject}", method = RequestMethod.GET)
-    public ResponseEntity<User> getUserByIdProject(@PathVariable(name = "idProject") Long idProject) {
-        User user = userService.findByIdProject(idProject);
-        return ResponseEntity.ok(user);
-    }
 
     @RequestMapping(value = "/users/idproject/{idProject}", method = RequestMethod.GET)
     public List<User> getAllUsersByIdProject(@PathVariable(name = "idProject") Long idProject) {
@@ -49,9 +44,27 @@ public class UserController {
         return userService.findAll();
     }
 
+    @RequestMapping(value = "/users/name/{page}/{size}/{direction}", method = RequestMethod.GET)
+    public Page<User> getAllUsersSortByName(@PathVariable(name = "page") int page,
+                                            @PathVariable(name = "size") int size,
+                                            @PathVariable(name = "direction") boolean direction) {
+        System.out.println(page + "====" + direction + "!!!");
+
+        return userService.findAll(page,size,direction);
+    }
+
     @RequestMapping(method = RequestMethod.POST)
     public User saveUser(@RequestBody User user) {
-        System.out.println(user.toString());
         return userService.save(user);
+    }
+
+    @RequestMapping(value = "/userviewmodel",method = RequestMethod.POST)
+    public User saveUserViewModel(@RequestBody User user) {
+        return userService.saveUserViewModel(user);
+    }
+
+    @RequestMapping(value = "/user/delete/{id}",method = RequestMethod.DELETE)
+    public void deleteUserById(@PathVariable(name = "id") Long id) {
+         userService.delete(id);
     }
 }

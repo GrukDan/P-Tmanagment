@@ -18,9 +18,11 @@ public interface TaskService {
 
     List<Task> findAll();
 
-    List<Task> findByIdUser(Long  idUser);
+    List<Task> findByIdExecutor(Long  idUser);
 
     List<Task> findByIdProject(Long  idProject);
+
+    List<Task> findTaskViewModelByIdProjectSortedByPriority(Long  idProject,int count);
 
     List<Task> findAllByName(String  taskName);
 

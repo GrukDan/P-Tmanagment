@@ -36,7 +36,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project save(Project project) {
-        System.out.println(project.toString());
         return projectRepository.save(project);
     }
 

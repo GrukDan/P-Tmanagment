@@ -7,7 +7,7 @@ import {TaskService} from "../services/task.service";
 import {Project} from "../../project/model/project";
 import {User} from "../../user/model/user";
 import {Subscription} from "rxjs";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {TaskViewModel} from "../model/taskViewModel";
 
 @Component({
@@ -39,13 +39,14 @@ export class TaskComponent implements OnInit {
               private activateRoute: ActivatedRoute,
               private userService: UserService,
               private projectService: ProjectService,
-              private taskService: TaskService) {
+              private taskService: TaskService,
+              private router:Router) {
 
   }
 
   ngOnInit(): void {
     const id = this.activateRoute.snapshot.params['id'];
-    this.loadTasks(id);
+    this.loadTask(id);
 
     this.priority = this.taskViewModel.priority;
     this.status = this.taskViewModel.status;
@@ -63,14 +64,11 @@ export class TaskComponent implements OnInit {
     if (this.taskViewModel.priority == "MINOR") this.taskViewModel.priority = "Minor";
   }
 
-  private loadTasks(id): void {
+  private loadTask(id): void {
     this.loadingService.show();
-    // Get data from BillingAccountService
     this.subscriptions.push(this.taskService.getTaskViewModelById(id).subscribe(taskViewModel => {
-      // Parse json response into local array
       this.taskViewModel = taskViewModel;
-      // Check data in console
-      console.log(this.taskViewModel);// don't use console.log in angular :)
+      console.log(this.taskViewModel);
       this.loadingService.hide();
     }));
   }
@@ -101,7 +99,7 @@ export class TaskComponent implements OnInit {
     this.subscriptions.push(this.taskService.deleteTask(this.taskViewModel.idTask).subscribe(taskViewModel => {
       this.loadingService.hide();
       console.log(this.idProject);
-      location.href = "project/" + this.idProject;
+      this.router.navigate(['/project', this.idProject]);
     }));
 
   }

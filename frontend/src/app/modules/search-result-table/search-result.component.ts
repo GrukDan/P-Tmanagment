@@ -9,7 +9,7 @@ import {TaskViewModel} from "../task/model/taskViewModel";
 
 @Component({
   selector: 'search-result',
-  templateUrl: './search_result.html',
+  templateUrl: './search-result.html',
   styleUrls: ['./style.css']
 })
 export class SearchResultComponent {

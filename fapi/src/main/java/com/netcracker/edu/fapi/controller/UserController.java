@@ -22,15 +22,26 @@ public class UserController {
         return userService.findAll();
     }
 
+    @RequestMapping(value="/users/name/{page}/{size}/{direction}",method = RequestMethod.GET)
+    public List<UserViewModel> getAllUsersSortByName(@PathVariable(name = "page") String page,
+                                                     @PathVariable(name = "size") String size,
+                                                     @PathVariable(name = "direction") String direction) {
+        System.out.println(page + "== " + size + "direction");
+        return userService.findAllSortByName(Integer.parseInt(page),Integer.parseInt(size),Integer.parseInt(direction));
+    }
+
     @GetMapping("/login")
     public UserViewModel getUserByLogin(@RequestParam String login) {
         return userService.findByLogin(login);
     }
 
+    @RequestMapping(value="/userviewmodel",method = RequestMethod.POST)
+    public UserViewModel saveUserViewModel(@RequestBody UserViewModel userViewModel) {
+        return userService.saveUserViewModel(userViewModel);
+    }
 
     @RequestMapping(method = RequestMethod.POST)
     public User saveUser(@RequestBody User user) {
-        System.out.println(user.toString());
         return userService.save(user);
     }
 
@@ -41,11 +52,17 @@ public class UserController {
 
     @RequestMapping(value="/user/authorization",method = RequestMethod.POST)
     public UserViewModel getUserByLoginAndPassword(@RequestBody User user) {
-        return userService.findByLoginAndPassword(user);
+        UserViewModel userViewModel = userService.findByLoginAndPassword(user);
+        return  userViewModel;
     }
 
     @RequestMapping(value="/user/{id}",method = RequestMethod.GET)
-    public UserViewModel getUserById(@PathVariable String id) {
+    public UserViewModel getUserById(@PathVariable(name = "id") String id) {
         return userService.findById(Long.valueOf(id));
+    }
+
+    @RequestMapping(value = "/user/delete/{id}",method = RequestMethod.DELETE)
+    public void deleteUserById(@PathVariable(name = "id") String id){
+        userService.deleteById(Long.valueOf(id));
     }
 }

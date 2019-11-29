@@ -6,9 +6,10 @@ import {HttpClientModule} from "@angular/common/http";
 import {Ng4LoadingSpinnerModule} from "ng4-loading-spinner";
 import {TaskModule} from "../../task/task.module";
 import {ProjectModule} from "../../project/project.module";
-import {HeadComponent} from "./app_head.component";
+import {HeadComponent} from "./app-head.component";
 import {UserModule} from "../../user/user.module";
-import {SearchResultModule} from "../../search-result-table/search_result.module";
+import {SearchResultModule} from "../../search-result-table/search-result.module";
+import {AccountsTableModule} from "../../accounts/accounts-table.module";
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import {SearchResultModule} from "../../search-result-table/search_result.module
     ProjectModule,
     UserModule,
     SearchResultModule,
+    AccountsTableModule,
 
     BrowserModule,
     RouterModule,

@@ -13,12 +13,25 @@ public class UserViewModel {
     public UserViewModel(){    }
 
     public UserViewModel(User user){
-        this.idUser = user.getIdUser();
-        this.name = user.getName();
-        this.surname = user.getSurname();
-        this.email = user.getEmail();
-        this.role = user.getRole();
-        this.assignProject = user.getAssignProject();
+        if(user!=null) {
+            this.idUser = user.getIdUser();
+            this.name = user.getName();
+            this.surname = user.getSurname();
+            this.email = user.getEmail();
+            this.role = user.getRole();
+            this.assignProject = user.getAssignProject();
+        }
+    }
+
+    public User getUser(){
+        User user  = new User();
+        user.setIdUser(idUser);
+        user.setName(name);
+        user.setSurname(surname);
+        user.setEmail(email);
+        user.setRole(role);
+        user.setAssignProject(assignProject);
+        return user;
     }
 
     public void setUserViewModel(User user){

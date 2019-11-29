@@ -79,14 +79,21 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> findByIdUser(Long  idUser) {
+    public List<Task> findByIdExecutor(Long  idUser) {
         RestTemplate restTemplate = new RestTemplate();
-        Task[] tasksResponse = restTemplate.getForObject(backendServerUrl + "/api/tasks/user/" + idUser, Task[].class);
+        Task[] tasksResponse = restTemplate.getForObject(backendServerUrl + "/api/tasks/executor/" + idUser, Task[].class);
         return tasksResponse == null ? Collections.emptyList() : Arrays.asList(tasksResponse);
     }
 
     @Override
     public List<Task> findByIdProject(Long  idProject) {
+        RestTemplate restTemplate = new RestTemplate();
+        Task[] tasksResponse = restTemplate.getForObject(backendServerUrl + "/api/tasks/project/" + idProject, Task[].class);
+        return tasksResponse == null ? Collections.emptyList() : Arrays.asList(tasksResponse);
+    }
+
+    @Override
+    public List<Task> findTaskViewModelByIdProjectSortedByPriority(Long idProject, int count) {
         RestTemplate restTemplate = new RestTemplate();
         Task[] tasksResponse = restTemplate.getForObject(backendServerUrl + "/api/tasks/project/" + idProject, Task[].class);
         return tasksResponse == null ? Collections.emptyList() : Arrays.asList(tasksResponse);

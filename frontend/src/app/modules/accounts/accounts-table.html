@@ -1,0 +1,36 @@
+<div class="mt-5 text-justify">
+  <h2 class="ml-3">All accounts</h2>
+  <table class="table table-hover table-dark ">
+    <thead>
+    <tr>
+      <th scope="col" class="waves-button" (click)="sortByName()">Name</th>
+      <th scope="col" class="waves-button">Surname</th>
+      <th scope="col" class="waves-button" >Email</th>
+      <th scope="col" class="waves-button" >Role</th>
+      <th scope="col" class="waves-button" >Assign project</th>
+
+    </tr>
+    </thead>
+    <tbody *ngIf="accounts.length>0; then table else void_table;">
+    </tbody>
+    <ng-template #table>
+      <tr *ngFor="let account of accounts" class="text-center">
+        <td>{{account.name}}</td>
+        <td>{{account.surname}}</td>
+        <td>{{account.email}}</td>
+        <td>{{account.role}}</td>
+        <td *ngIf="account.assignProject">{{account.assignProject}}</td>
+        <td *ngIf="!account.assignProject">No assign project</td>
+        <td><button class="btn btn-primary" [routerLink]="['/account',account.idUser]">More</button></td>
+      </tr>
+    </ng-template>
+    <ng-template #void_table>
+      <tr>
+        <td colspan="6">No accounts found.</td>
+      </tr>
+    </ng-template>
+    <ng-template #no_assignProject>
+      <td>No assign project</td>
+    </ng-template>
+  </table>
+</div>

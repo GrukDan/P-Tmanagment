@@ -7,7 +7,7 @@ import java.util.List;
 public interface TaskService {
 
     List<Task> findAll();
-    List<Task> findByIdUser(Long idUser);
+    List<Task> findByIdExecutor(Long idUser);
     List<Task> findByIdProject(Long idProject);
     List<Task> findAllByName(String taskName);
     Task findById(Long idTask);
