@@ -36,4 +36,8 @@ public class ProjectController {
         return projectService.findById(id);
     }
 
+    @RequestMapping(value="/project",method = RequestMethod.DELETE)
+    public void deleteProject(@RequestParam("idProject") String idProject){
+         projectService.deleteProject(Long.valueOf(idProject));
+    }
 }

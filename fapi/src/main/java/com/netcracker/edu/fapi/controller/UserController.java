@@ -1,10 +1,15 @@
 package com.netcracker.edu.fapi.controller;
 
+import com.netcracker.edu.fapi.models.AuthorizationModel;
+import com.netcracker.edu.fapi.models.PaginationModels.UserPaginationModel;
 import com.netcracker.edu.fapi.models.User;
-import com.netcracker.edu.fapi.models.UserViewModel;
+import com.netcracker.edu.fapi.models.ViewModels.UserViewModel;
 import com.netcracker.edu.fapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+//import org.springframework.security.authentication.AuthenticationManager;
+//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,26 +21,26 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+//    private final JwtTokenProvider jwtTokenProvider;
+//    private final AuthenticationManager authenticationManager;
+//
+//    @Autowired
+//    public UserController(UserService userService, JwtTokenProvider jwtTokenProvider, AuthenticationManager authenticationManager) {
+//        this.jwtTokenProvider = jwtTokenProvider;
+//        this.userService = userService;
+//        this.authenticationManager = authenticationManager;
+//    }
 
-    @GetMapping("/users")
-    public List<UserViewModel> getAllUsers() {
-        return userService.findAll();
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public UserPaginationModel getAllUsersSort(@RequestParam("parameter") String parameter,
+                                               @RequestParam("page") String page,
+                                               @RequestParam("size") String size,
+                                               @RequestParam("direction") String direction) {
+        UserPaginationModel userPaginationModel = userService.findAllSort(parameter, page, size, direction);
+        return userPaginationModel;
     }
 
-    @RequestMapping(value="/users/name/{page}/{size}/{direction}",method = RequestMethod.GET)
-    public List<UserViewModel> getAllUsersSortByName(@PathVariable(name = "page") String page,
-                                                     @PathVariable(name = "size") String size,
-                                                     @PathVariable(name = "direction") String direction) {
-        System.out.println(page + "== " + size + "direction");
-        return userService.findAllSortByName(Integer.parseInt(page),Integer.parseInt(size),Integer.parseInt(direction));
-    }
-
-    @GetMapping("/login")
-    public UserViewModel getUserByLogin(@RequestParam String login) {
-        return userService.findByLogin(login);
-    }
-
-    @RequestMapping(value="/userviewmodel",method = RequestMethod.POST)
+    @RequestMapping(value = "/userviewmodel", method = RequestMethod.POST)
     public UserViewModel saveUserViewModel(@RequestBody UserViewModel userViewModel) {
         return userService.saveUserViewModel(userViewModel);
     }
@@ -45,24 +50,37 @@ public class UserController {
         return userService.save(user);
     }
 
-    @RequestMapping(value="/user/project/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/user/project/{id}", method = RequestMethod.GET)
     public List<UserViewModel> getUserByIdProject(@PathVariable String id) {
         return userService.findByIdProject(Long.valueOf(id));
     }
 
-    @RequestMapping(value="/user/authorization",method = RequestMethod.POST)
-    public UserViewModel getUserByLoginAndPassword(@RequestBody User user) {
-        UserViewModel userViewModel = userService.findByLoginAndPassword(user);
-        return  userViewModel;
+//    @RequestMapping(value = "/user/authorization", method = RequestMethod.POST)
+//    public User getUserByLoginAndPassword(@RequestBody AuthorizationModel authorizationModel) {
+//        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authorizationModel.getLogin(), authorizationModel.getPassword()));
+//        User user = userService.findByLoginAndPassword(authorizationModel.getLogin(), authorizationModel.getPassword());
+//        if(user == null){
+//            throw new UsernameNotFoundException("User with login " + authorizationModel.getLogin() + " not found!");
+//        }
+//        String token = jwtTokenProvider.createToken(authorizationModel.getLogin());
+//
+//        //TODO: 1/08 Моделька юхера которая содержит токен?
+//        return user;
+//    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
+    public UserViewModel getUserByLoginAndPassword(@RequestBody AuthorizationModel authorizationModel) {
+        User user = userService.findByLoginAndPassword(authorizationModel.getLogin(), authorizationModel.getPassword());
+        return new UserViewModel(user);
     }
 
-    @RequestMapping(value="/user/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
     public UserViewModel getUserById(@PathVariable(name = "id") String id) {
         return userService.findById(Long.valueOf(id));
     }
 
-    @RequestMapping(value = "/user/delete/{id}",method = RequestMethod.DELETE)
-    public void deleteUserById(@PathVariable(name = "id") String id){
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
+    public void deleteUserById(@PathVariable(name = "id") String id) {
         userService.deleteById(Long.valueOf(id));
     }
 }

@@ -5,4 +5,5 @@ export class  UserViewModel {
   email: string;
   role: string;
   assignProject:string;
+  assignProjectName:string;
 }

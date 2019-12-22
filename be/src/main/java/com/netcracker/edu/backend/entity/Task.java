@@ -18,7 +18,7 @@ public class Task {
     private Date dueDate;
     private Date updated;
     private String description;
-    private long executor;
+    private Long executor;
     private long idProject;
     private String taskCode;
     private long taskCreator;
@@ -107,11 +107,11 @@ public class Task {
 
     @Basic
     @Column(name = "executor")
-    public long getExecutor() {
+    public Long getExecutor() {
         return executor;
     }
 
-    public void setExecutor(long executor) {
+    public void setExecutor(Long executor) {
         this.executor = executor;
     }
 

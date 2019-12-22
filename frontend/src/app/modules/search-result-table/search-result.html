@@ -1,40 +1,48 @@
-<div class="mt-5 text-justify">
-  <h2 class="ml-3">Search result for: {{searchString}}</h2>
-  <table class="table table-hover table-dark ">
-    <thead>
+<div class="text-justify p-5 pt-4 backgr">
+  <h1>Search result for: {{searchString}}</h1>
+  <table class="table table-hover table-dark">
+    <thead class="h4">
     <tr>
-      <th scope="col">Task code</th>
-      <th scope="col" class="waves-button" >Task name</th>
-      <th scope="col" class="waves-button">Priority</th>
-      <th scope="col" class="waves-button" >Status</th>
-      <th scope="col" class="waves-button" >Task creator</th>
-      <th scope="col" class="waves-button" >Task executor</th>
-      <th scope="col" class="waves-button" >Date of creation</th>
-      <th scope="col" class="waves-button" >Due date</th>
-      <th scope="col" class="waves-button" >Update</th>
-
+      <th scope="col" class="text-center h4">Task code</th>
+      <th scope="col" class="waves-button " (click)="sort(parameters[0])">Task name</th>
+      <th scope="col" class="waves-button " (click)="sort(parameters[1])">Priority</th>
+      <th scope="col" class="waves-button " (click)="sort(parameters[2])">Status</th>
+      <th scope="col" class="waves-button " (click)="sort(parameters[3])">Date of creation</th>
+      <th scope="col" class="waves-button " (click)="sort(parameters[4])">Due date</th>
+      <th scope="col" class="waves-button " (click)="sort(parameters[5])">Updated</th>
+      <th scope="col" class="text-center h4">Executor</th>
     </tr>
     </thead>
     <tbody *ngIf="tasks.length>0; then table else void_table;">
     </tbody>
     <ng-template #table>
-      <tr *ngFor="let task of tasks">
-        <td class="text-center">{{task.taskCode}}</td>
-        <td class="text-center" (click)="sortByName()">{{task.taskName}}</td>
-        <td class="text-center">{{task.priority}}</td>
-        <td class="text-center">{{task.status}}</td>
-        <td class="text-center">{{task.taskCreator}}</td>
-        <td class="text-center">{{task.executor}}</td>
-        <td class="text-center">{{task.dateOfCreation | date}}</td>
-        <td class="text-center">{{task.dueDate | date}}</td>
-        <td class="text-center">{{task.updated | date}}</td>
-        <td><button class="btn btn-primary" [routerLink]="['/task/',task.idTask]">More</button></td>
-      </tr>
-    </ng-template>
-    <ng-template #void_table>
-      <tr>
-        <td colspan="11">No tasks found.</td>
+      <tr *ngFor="let task of tasks " class="text-center ">
+        <td class="h6">{{task.taskCode}}</td>
+        <td class="h6">{{task.taskName}}</td>
+        <td class="h6">{{task.priority}}</td>
+        <td class="h6">{{task.status}}</td>
+        <td class="h6">{{task.dateOfCreation | date}}</td>
+        <td class="h6">{{task.dueDate | date}}</td>
+        <td class="h6">{{task.updated | date }}</td>
+        <td class="h6" *ngIf="task?.executorId!=null"><a [routerLink]="['/account',task.executorId]">{{task.executorSurname}} {{task.executorName}}</a></td>
+        <td class="h6" *ngIf="task?.executorId==null"><a>No executor</a></td>
+        <td>
+          <button class="btn btn-primary" [routerLink]="['/task',task.idTask]">More</button>
+        </td>
       </tr>
     </ng-template>
   </table>
+  <div class="row">
+    <div class="col-xs-12 col-12">
+      <pagination [boundaryLinks]="true" [totalItems]="pagesCount"  class="justify-content-center"
+                  previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
+                  (pageChanged)="pageChanged($event)">
+      </pagination>
+    </div>
+  </div>
+  <ng-template #void_table>
+    <tr>
+      <td colspan="6" class="h3">No tasks found.</td>
+    </tr>
+  </ng-template>
 </div>

@@ -1,12 +1,16 @@
 package com.netcracker.edu.fapi.controller;
 
 
+import com.netcracker.edu.fapi.models.PaginationModels.TaskPaginationModel;
 import com.netcracker.edu.fapi.models.Task;
-import com.netcracker.edu.fapi.models.TaskViewModel;
+import com.netcracker.edu.fapi.models.ViewModels.TaskViewModel;
 import com.netcracker.edu.fapi.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -17,11 +21,6 @@ public class TaskController {
 
     @Autowired
     private TaskService taskService;
-
-    @GetMapping("/tasks")
-    public List<Task> getAllTasks() {
-        return taskService.findAll();
-    }
 
     @RequestMapping(value = "/tasks/executor/{id}", method = RequestMethod.GET)
     public List<Task> getTasksByIdUser(@PathVariable String id) {
@@ -64,11 +63,19 @@ public class TaskController {
         taskService.deleteTask(Long.valueOf(id));
     }
 
+    @RequestMapping(value = "/tasks", method = RequestMethod.GET)
+    public List<Task> getTaskByIdProjectSorted(@RequestParam("idProject") String idProject,
+                                               @RequestParam("parameter") String parameter,
+                                               @RequestParam("direction") String direction) {
+        return taskService.findTaskByIdProjectSorted(idProject,parameter,direction);
+    }
 
-
-    @RequestMapping(value = "/tasks/project/name/sort/priority{projectId}{count}", method = RequestMethod.GET)
-    public void getTaskViewModelByIdProjectSortedByPriority(@RequestParam(value = "projectId") String projectId,@RequestParam(value = "count") String count) {
-       // return taskService.findTaskViewModelById(Long.valueOf(id));
-        System.out.println(projectId + "=============" + count);
+    @RequestMapping(value = "/tasks/pagination", method = RequestMethod.GET)
+    public TaskPaginationModel getTasksSorted(@RequestParam("parameter") String parameter,
+                                              @RequestParam("page") String page,
+                                              @RequestParam("size") String size,
+                                              @RequestParam("direction") String direction,
+                                              @RequestParam("search") String search) {
+        return taskService.findAllSorted(parameter,page,size,direction,search);
     }
 }

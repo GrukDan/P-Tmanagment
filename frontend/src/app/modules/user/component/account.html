@@ -1,112 +1,254 @@
-<div class="backgr">
-  <div class="container fontRaleway text-justify ">
-    <div class="row text-justify">
-      <div class="col">
-        <div class="row text-justify  mb-3 mr-4 mt-3">
-          <div class="col">
-            <span><h3>User name:</h3></span><span><span *ngIf="!editMode">{{account.name}}</span></span>
-            <input type="text" class="form-control" *ngIf="editMode" [(ngModel)]="account.name">
-          </div>
-        </div>
-        <div class="row text-justify  mb-3 mr-4">
-          <div class="col">
-            <span><h3>User surname:</h3></span><span><span *ngIf="!editMode">{{account.surname}}</span></span>
-            <input type="text" class="form-control" *ngIf="editMode" [(ngModel)]="account.surname">
-          </div>
-        </div>
-        <div class="row text-justify mb-3 mr-4">
-          <div class="col">
-            <span><h3>Email:</h3></span><span><span *ngIf="!editMode">{{account.email}}</span></span>
-            <input type="text" class="form-control" *ngIf="editMode" [(ngModel)]="account.email">
-          </div>
-        </div>
+<tabset [justified]="true">
+  <tab class="backgr">
+    <ng-template tabHeading>
+      <span class="h2">Account <i class="fa fa-user-circle"></i></span>
+    </ng-template>
+    <div class="container fontRaleway text-justify ">
+      <div *ngIf="editMode && userService.isAdmin();then admin_edit_templ"></div>
+      <div *ngIf="editMode && userService.isPM();then  pm_edit_templ"></div>
+      <div *ngIf="!editMode;then no_edit_templ"></div>
 
-        <!--        <div class="row text-justify mb-3 mr-4">-->
-        <!--          <div class="col">-->
-        <!--            <span><h3>Login:</h3></span><span><span *ngIf="!editMode">{{user.login}}</span></span>-->
-        <!--            <input type="text" class="form-control" *ngIf="editMode" [(ngModel)]="user.login">-->
-        <!--          </div>-->
-        <!--        </div>-->
-        <!--        <div class="row text-justify mb-3 mr-4">-->
-        <!--          <div class="col">-->
-        <!--            <span><h3>Password:</h3></span><span><span *ngIf="!editMode">{{user.password}}</span></span>-->
-        <!--            <input type="password" class="form-control" *ngIf="editMode" [(ngModel)]="user.password">-->
-        <!--          </div>-->
-        <!--        </div>-->
-      </div>
+      <ng-template #admin_edit_templ>
+        <div class="row text-justify h2">
+          <div class="col">
+            <div class="row text-justify  mb-3 mr-4 mt-3 ">
+              <div class="col">
+                <h3>User name:</h3>
+                <div class="form-group" >
+                  <input type="text" class="form-control"
+                         name="userName"
+                         #userName="ngModel"
+                         required pattern="[a-zA-Z]{2,15}"
+                         [(ngModel)]="account.name">
+                  <div [hidden]="userName.valid || userName.untouched" class="alert alert-danger">
+                    Username is incorrect
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row text-justify  mb-3 mr-4">
+              <div class="col">
+                <h3>User surname:</h3>
+                <div class="form-group" >
+                  <input type="text" class="form-control" name="userSurname"
+                         #userSurname="ngModel"
+                         required pattern="[a-zA-Z- ]{2,20}"
+                         [(ngModel)]="account.surname">
+                  <div [hidden]="userSurname.valid || userSurname.untouched" class="alert alert-danger">
+                    Users surname is incorrect
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row text-justify mb-3 mr-4">
+              <div class="col">
+                <h3>Email:</h3>
+                <div class="form-group">
+                  <input type="text" class="form-control"
+                         name="userEmail"
+                         #userEmail="ngModel"
+                         required pattern="^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
+                         [(ngModel)]="account.email">
+                  <div [hidden]="userEmail.valid || userEmail.untouched"  class="alert alert-danger">
+                    Users email is incorrect
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col ">
+            <div class="row text-justify mb-3 mr-4 mt-3">
+              <div class="col">
+                <h3>Assign project:</h3>
+                  <span *ngIf="assignProject == null;then no_projects"></span>
+                  <span *ngIf="assignProject != null">{{assignProject.projectName}}</span>
+              </div>
+            </div>
+            <ng-template #no_projects>
+              <a class="list-group-item-muted">
+                <h4 class="list-group-item-heading">No assign projects</h4>
+              </a>
+            </ng-template>
+            <div class="row text-justify mb-3 mr-4">
+              <div class="col">
+                <h3>Role:</h3>
+                <select class="form-control"  name="role"
+                        *ngIf="notAdminAccount()"
+                        [(ngModel)]="account.role">
+                  <option *ngFor="let role of availableRoles" [value]="role">{{role}}</option>
+                </select>
+                <span *ngIf="!notAdminAccount()">{{account.role}}</span>
+              </div>
+            </div>
+            <div class="row text-justify mb-3 mr-4">
+              <div class="col">
+                <button class="btn btn-primary " *ngIf="userService.isAdmin()"
+                        [disabled]="userName.invalid || userSurname.invalid || userEmail.invalid"
+                        (click)="edit()">{{editMode ? "Save" : "Edit account"}}</button>
+                <button class="btn btn-primary" *ngIf="userService.isAdmin()" (click)="deleteAccount()">Delete account
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
 
-      <div class="col ">
-        <div class="row text-justify mb-3 mr-4 mt-3">
+      <ng-template #pm_edit_templ>
+        <div class="row text-justify h2">
           <div class="col">
-            <span><h3>Assign project:</h3></span>
-            <span *ngIf="!assignProject?.idProject && !editMode;then no_projects">
+            <div class="row text-justify  mb-3 mr-4 mt-3 ">
+              <div class="col">
+                <h3>User name:</h3>
+                <span >{{account.name}}</span>
+              </div>
+            </div>
+            <div class="row text-justify  mb-3 mr-4">
+              <div class="col">
+                <h3>User surname:</h3>
+                <span>{{account.surname}}</span>
+              </div>
+            </div>
+            <div class="row text-justify mb-3 mr-4">
+              <div class="col">
+                <h3>Email:</h3>
+                <span>{{account.email}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col ">
+            <div class="row text-justify mb-3 mr-4 mt-3">
+              <div class="col">
+                <h3>Assign project:</h3>
+              <div *ngIf="userService.isPM()">
+                <span *ngIf="!notAdminAccount();then no_projects"></span>
+                <select class="form-control"  name="execut"
+                        *ngIf="notAdminAccount()"
+                        (blur)="assignProjectBlur()"
+                        [(ngModel)]="account.assignProject">
+                  <option *ngFor="let project of projects" [value]="project.idProject">{{project.projectName}}</option>
+                </select>
+              </div>
+              </div>
+              </div>
+              <ng-template #no_projects>
+                <a class="list-group-item-muted">
+                  <h4 class="list-group-item-heading">No assign projects</h4>
+                </a>
+              </ng-template>
+            <div class="row text-justify mb-3 mr-4">
+              <div class="col">
+                <h3>Role:</h3>
+                <span>{{account.role}}</span>
+              </div>
+            </div>
+            <div class="row text-justify mb-3 mr-4">
+              <div class="col">
+                <button class="btn btn-primary " *ngIf="userService.isPM()"
+                        (click)="edit()">{{editMode ? "Save" : "Edit account"}}</button>
+                <button class="btn btn-primary" *ngIf="userService.isAdmin()" (click)="deleteAccount()">Delete account
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+
+      <ng-template #no_edit_templ>
+        <div class="row text-justify h2">
+          <div class="col">
+            <div class="row text-justify  mb-3 mr-4 mt-3 ">
+              <div class="col">
+                <h3>User name:</h3>
+                <span>{{account.name}}</span>
+              </div>
+            </div>
+            <div class="row text-justify  mb-3 mr-4">
+              <div class="col">
+                <h3>User surname:</h3>
+                <span>{{account.surname}}</span>
+              </div>
+            </div>
+            <div class="row text-justify mb-3 mr-4">
+              <div class="col">
+                <h3>Email:</h3>
+                <span>{{account.email}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col ">
+            <div class="row text-justify mb-3 mr-4 mt-3">
+              <div class="col">
+                <h3>Assign project:</h3>
+                <span *ngIf="assignProject == null ;then no_projects"></span>
+                <span *ngIf="assignProject!=null"> <a
+                  [routerLink]="['/project',assignProject.idProject]">{{assignProject.projectName}}</a>
             </span>
-            <span *ngIf="!editMode && assignProject?.idProject"><a
-              [routerLink]="['/project',account?.assignProject]">{{assignProject.projectName}}</a>
-            </span>
-            <select class="form-control" id="executor" name="execut"
-                    *ngIf="editMode"
-                    (blur)="assignProjectBlur()"
-                    [(ngModel)]="account.assignProject">
-              <option *ngFor="let project of projects" [value]="project.idProject">{{project.projectName}}</option>
-            </select>
-          </div>
-          <ng-template #no_projects>
-            <a class="list-group-item-muted">
-              <h4 class="list-group-item-heading">No assign projects</h4>
-            </a>
-          </ng-template>
-        </div>
-        <div class="row text-justify mb-3 mr-4">
-          <div class="col">
-            <span><h3>Role:</h3></span><span><span *ngIf="!editMode">{{account.role}}</span></span>
-            <input type="text" class="form-control" *ngIf="editMode" [(ngModel)]="account.role">
-          </div>
-        </div>
-        <div class="row text-justify mb-3 mr-4">
-          <div class="col">
-          <button class="btn btn-primary " (click)="edit()">{{editMode ? "Save" : "Edit account"}}</button>
-          <button class="btn btn-primary" (click)="deleteAccount()">Delete account</button>
+              </div>
+              <ng-template #no_projects>
+                <a class="list-group-item-muted">
+                  <h4 class="list-group-item-heading">No assign projects</h4>
+                </a>
+              </ng-template>
+            </div>
+            <div class="row text-justify mb-3 mr-4">
+              <div class="col">
+               <h3>Role:</h3>
+                <span >{{account.role}}</span>
+              </div>
+            </div>
+            <div class="row text-justify mb-3 mr-4">
+              <div class="col">
+                <button class="btn btn-primary " *ngIf="userService.isPM() || userService.isAdmin()"
+                        (click)="edit()">{{editMode ? "Save" : "Edit account"}}</button>
+                <button class="btn btn-primary" *ngIf="userService.isAdmin()" (click)="deleteAccount()">Delete account
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </ng-template>
     </div>
-  </div>
+  </tab>
 
-
-  <div class="m-5 text-justify">
-    <span><h2>Tasks:</h2></span>
-    <table class="table table-hover table-dark ">
-      <thead>
-      <tr>
-        <th scope="col" class="text-center">Task code</th>
-        <th scope="col" class="waves-button">Task name</th>
-        <th scope="col" class="waves-button">Priority</th>
-        <th scope="col" class="waves-button">Status</th>
-        <th scope="col" class="waves-button">Date of creation</th>
-        <th scope="col" class="waves-button">Due date</th>
-        <th scope="col" ></th>
-      </tr>
-      </thead>
-      <tbody *ngIf="tasks.length>0; then table else void_table;">
-      </tbody>
-      <ng-template #table>
-        <tr *ngFor="let task of tasks" class="text-center">
-          <th scope="row">{{task.taskCode}}</th>
-          <td>{{task.taskName}}</td>
-          <td>{{task.priority}}</td>
-          <td>{{task.status}}</td>
-          <td>{{task.dateOfCreation | date}}</td>
-          <td>{{task.dueDate | date}}</td>
-          <td class="text-center"><button class="btn btn-primary" [routerLink]="['/task/',task.idTask]" >More</button></td>
-        </tr>
-      </ng-template>
-      <ng-template #void_table>
+  <tab class="backgr">
+    <ng-template tabHeading>
+      <span class="h2">Tasks <i class="fa fa-tasks"></i></span>
+    </ng-template>
+    <div class="text-justify p-3 pt-4">
+      <table class="table table-hover table-dark ">
+        <thead class="h3">
         <tr>
-          <td colspan="7">No tasks have been created for this project.</td>
+          <th scope="col" class="text-center h3">Task code</th>
+          <th scope="col" class="waves-button">Task name</th>
+          <th scope="col" class="waves-button">Priority</th>
+          <th scope="col" class="waves-button">Status</th>
+          <th scope="col" class="waves-button">Date of creation</th>
+          <th scope="col" class="waves-button">Due date</th>
+          <th scope="col"></th>
         </tr>
-      </ng-template>
-    </table>
-  </div>
-</div>
+        </thead>
+        <tbody *ngIf="tasks.length>0; then table else void_table;">
+        </tbody>
+        <ng-template #table>
+          <tr *ngFor="let task of tasks" class="text-center">
+            <th scope="row" class="h5">{{task.taskCode}}</th>
+            <td class="h5">{{task.taskName}}</td>
+            <td class="h5">{{task.priority}}</td>
+            <td class="h5">{{task.status}}</td>
+            <td class="h5">{{task.dateOfCreation | date}}</td>
+            <td class="h5">{{task.dueDate | date}}</td>
+            <td class="text-center">
+              <button class="btn btn-primary" [routerLink]="['/task/',task.idTask]">More</button>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template #void_table>
+          <tr>
+            <td colspan="7" class="h3">No tasks <i class="fa fa-smile-o"></i></td>
+          </tr>
+        </ng-template>
+      </table>
+    </div>
+  </tab>
+</tabset>
 

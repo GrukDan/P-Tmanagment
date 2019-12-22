@@ -1,6 +1,7 @@
 package com.netcracker.edu.backend.controller;
 
 
+import com.netcracker.edu.backend.PaginationModels.TaskPaginationModelResponse;
 import com.netcracker.edu.backend.entity.Task;
 import com.netcracker.edu.backend.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,14 +17,29 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @GetMapping("/tasks")
-    public List<Task> getAllTasks(){return taskService.findAll();}
-
     @RequestMapping(value = "/tasks/executor/{id}", method = RequestMethod.GET)
     public List<Task> getTaskByIdExecutor(@PathVariable(name = "id") Long id){return taskService.findByIdExecutor(id);}
 
-    @RequestMapping(value = "/tasks/project/{id}", method = RequestMethod.GET)
-    public List<Task> getAllTasksByIdProject(@PathVariable(name = "id") Long id){return taskService.findByIdProject(id);}
+    @RequestMapping(value = "/tasks", method = RequestMethod.GET)
+    public List<Task> getTaskByIdProjectSorted(@RequestParam("idProject") String idProject,
+                                               @RequestParam("parameter") String parameter,
+                                               @RequestParam("direction") int direction) {
+        return taskService.findTasksByIdProjectSorted(Long.valueOf(idProject),parameter,direction);
+    }
+
+    @RequestMapping(value = "/tasks/pagination", method = RequestMethod.GET)
+    public TaskPaginationModelResponse getAllTasksSorted(@RequestParam("parameter") String parameter,
+                                                         @RequestParam("page") int page,
+                                                         @RequestParam("size") int size,
+                                                         @RequestParam("direction") boolean direction,
+                                                         @RequestParam("search")String search) {
+        return taskService.findAllSorted(parameter,page,size,direction,search);
+    }
+
+    @RequestMapping(value = "/tasks/project", method = RequestMethod.GET)
+    public List<Task> getTaskByIdProject(@RequestParam("idProject") String idProject) {
+        return taskService.findByIdProject(Long.valueOf(idProject));
+    }
 
     @RequestMapping(value = "/tasks/name/{name}", method = RequestMethod.GET)
     public List<Task> getAllTasksName(@PathVariable(name = "name") String taskName){return taskService.findAllByName(taskName);}

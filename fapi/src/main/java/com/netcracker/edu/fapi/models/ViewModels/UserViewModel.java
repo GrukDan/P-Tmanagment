@@ -1,4 +1,6 @@
-package com.netcracker.edu.fapi.models;
+package com.netcracker.edu.fapi.models.ViewModels;
+
+import com.netcracker.edu.fapi.models.User;
 
 import java.util.Objects;
 
@@ -9,8 +11,17 @@ public class UserViewModel {
     private String email;
     private Object role;
     private Long assignProject;
+    private String assignProjectName;
 
     public UserViewModel(){    }
+
+    public String getAssignProjectName() {
+        return assignProjectName;
+    }
+
+    public void setAssignProjectName(String assignProjectName) {
+        this.assignProjectName = assignProjectName;
+    }
 
     public UserViewModel(User user){
         if(user!=null) {

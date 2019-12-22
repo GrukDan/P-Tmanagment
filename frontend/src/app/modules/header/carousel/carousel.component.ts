@@ -5,6 +5,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {UserService} from "../../user/services/user.service";
 import {User} from "../../user/model/user";
 import {UserViewModel} from "../../user/model/userViewModel";
+import {AuthorizationModel} from "../../user/model/authorizationModel";
 
 @Component({
   selector: 'carouselBack',
@@ -13,7 +14,7 @@ import {UserViewModel} from "../../user/model/userViewModel";
 export class CarouselComponent{
 
   public  userViewModel:UserViewModel;
-  public account:User = new User();
+  public account:AuthorizationModel = new AuthorizationModel();
   public modalRef: BsModalRef;
 
   constructor(private modalService: BsModalService,
@@ -30,14 +31,12 @@ export class CarouselComponent{
     this.modalRef.hide();
   }
 
-
   public authorization():void{
     this.userService.authorization(this.account).subscribe(user => {
       this.userViewModel = user;
-
       if (this.userViewModel.name) {
         this._closeModal();
-        this.router.navigate(['/account',this.userService.account.idUser]);
+        this.router.navigate(['/account',this.userService.getAccount().idUser]);
       }
     });
   }

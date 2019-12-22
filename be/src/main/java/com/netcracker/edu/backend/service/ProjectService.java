@@ -10,6 +10,6 @@ public interface ProjectService {
     Project findByCode(String code);
     Project findById(Long id);
     Project save(Project project);
-    void delete(String code);
+    void deleteProject(Long idProject);
 
 }

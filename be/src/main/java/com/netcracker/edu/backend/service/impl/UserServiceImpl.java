@@ -1,6 +1,7 @@
 package com.netcracker.edu.backend.service.impl;
 
 import com.netcracker.edu.backend.entity.User;
+import com.netcracker.edu.backend.PaginationModels.UserPaginationModelResponse;
 import com.netcracker.edu.backend.repository.UserRepository;
 
 import com.netcracker.edu.backend.service.UserService;
@@ -19,15 +20,15 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public List<User> findAll() {
-        return  userRepository.findAll();
-    }
-
-    @Override
-    public Page<User> findAll(int page, int size, boolean direction) {
-        if(direction)
-        return  userRepository.findAll(PageRequest.of(page,size, Sort.by(Sort.Direction.ASC,"name")));
-        else return userRepository.findAll(PageRequest.of(page,size, Sort.by(Sort.Direction.DESC,"name")));
+    public UserPaginationModelResponse findAll(String parameter, int page, int size, int direction) {
+        Page<User> userPage;
+        if (direction == 1)
+            userPage = userRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, parameter)));
+        else userPage = userRepository.findAll(PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, parameter)));
+        List<User> userList = userPage.getContent();
+        User[] users = new User[userList.size()];
+        users = userList.toArray(users);
+        return new UserPaginationModelResponse(userPage.getTotalElements(), page, users);
     }
 
     @Override
@@ -52,7 +53,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(User user) {
-        return userRepository.save(user);
+        User checkUser = userRepository.findByLoginAndPassword(user.getLogin(), user.getPassword());
+        if (checkUser == null) return userRepository.save(user);
+        else return null;
     }
 
     @Override
@@ -69,11 +72,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void delete(Long id) {
         userRepository.deleteById(id);
-    }
-
-    @Override
-    public void delete(String login) {
-
     }
 
     @Override

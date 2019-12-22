@@ -1,87 +1,159 @@
-<div class="qwe">
-<accordion isAnimated="true" class="mt-4 font-weight-bold">
-  <accordion-group [heading]='projectViewModel.projectCode + "/"+ projectViewModel.projectName' class="font-weight-bold"  isAnimated="true" panelClass="customClass">
-    <div class="container fontRaleway text-justify">
-      <div class="row text-justify">
-        <div class="col">
-          <div class="row text-justify  mb-3 mr-4">
-            <div class="col">
-              <span><h3>Project name:</h3></span><span><span *ngIf="!editMode">{{projectViewModel.projectName}}</span></span>
-              <input type="text" class="form-control" *ngIf="editMode" [(ngModel)]="projectViewModel.projectName">
-            </div>
-          </div>
-          <div class="row text-justify mb-3 mr-4">
-            <div class="col">
-              <span><h3>Project code:</h3></span><span><span >{{projectViewModel.projectCode}}</span></span>
-<!--              <input type="text" class="form-control" *ngIf="editMode" [(ngModel)]="project.projectCode">-->
-            </div>
-          </div>
-          <div class="row text-justify mb-3 mr-4">
-            <div class="col">
-              <span><h3>Date of completion:</h3></span><span><span *ngIf="!editMode">{{projectViewModel.dateCompletion | date}}</span></span>
-              <input type="date"  class="form-control" *ngIf="editMode" [(ngModel)]="projectViewModel.dateCompletion">
-            </div>
-          </div>
+<accordion isAnimated="true" class="font-weight-bold">
+  <accordion-group isAnimated="true">
+    <button class="btn btn-link btn-block clearfix" accordion-heading type="button">
+      <span class="pull-left float-left h2">{{projectViewModel.projectCode + "/" + projectViewModel.projectName}}
+        </span>
+    </button>
+    <div class="container fontRaleway text-justify ">
+      <div *ngIf="editMode;then edit_templ;else no_edit_templ"></div>
 
-        </div>
-        <!--        TWO COL-->
-        <div class="col">
-          <div class="row text-justify mb-3 mr-4">
-            <div class="col">
-              <span><h3>Readiness degree:</h3></span><span>{{projectViewModel.readinessDegree}}%</span>
+      <ng-template #edit_templ>
+        <div class="row text-justify h4">
+          <div class="col">
+            <div class="row text-justify  mb-3 mr-4">
+              <div class="col">
+                <h3>Project name:</h3>
+                <input type="text" class="form-control"
+                       #projectName="ngModel"
+                       required pattern="[a-zA-Z- ]{2,20}"
+                       [(ngModel)]="projectViewModel.projectName">
+                <div [hidden]="projectName.valid || projectName.untouched" class="alert alert-danger">
+                  Pls set project name
+                </div>
+              </div>
+            </div>
+            <div class="row text-justify mb-3 mr-4">
+              <div class="col">
+                <h3>Project code:</h3>
+                <span>{{projectViewModel.projectCode}}</span>
+              </div>
+            </div>
+            <div class="row text-justify mb-3 mr-4">
+              <div class="col">
+                <h3>Date of completion:</h3>
+                <input type="date" class="form-control"
+                       #dateCompletion="ngModel"  required
+                       [(ngModel)]="projectViewModel.dateCompletion">
+                <div [hidden]="dateCompletion.valid || dateCompletion.untouched" class="alert alert-danger">
+                  Pls set date of completion
+                </div>
+              </div>
             </div>
           </div>
-          <div class="row text-justify mb-3 mr-4">
-            <div class="col">
-              <span><h3>Project creator:</h3></span><span><span >
-              <a [routerLink]="['/account/',projectViewModel.projectCreator]">{{projectViewModel.projectCreatorName}} {{projectViewModel.projectCreatorSurname}}
-              </a></span></span>
+          <div class="col">
+            <div class="row text-justify mb-3 mr-4">
+              <div class="col">
+                <h3>Readiness degree:</h3>
+                <span>{{projectViewModel?.readinessDegree != null ? projectViewModel.readinessDegree + '%' : 'in progress'}}</span>
+              </div>
+            </div>
+            <div class="row text-justify mb-3 mr-4">
+              <div class="col">
+                <h3>Project creator:</h3><span>
+              <a [routerLink]="['/account/',projectViewModel.projectCreator]">
+                {{projectViewModel.projectCreatorName}} {{projectViewModel.projectCreatorSurname}}
+              </a></span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="row text-justify mb-3 mr-4">
-        <div class="col">
-          <span><h3>Description of project:</h3></span>
-          <span><span *ngIf="!editMode">{{projectViewModel.description}}</span></span>
-          <textarea type="text" class="form-control" *ngIf="editMode" [(ngModel)]="projectViewModel.description"></textarea>
+        <div class="row  mb-3 mr-4">
+          <div class="col">
+            <h3>Description of project:</h3>
+            <textarea type="text" class="form-control" [(ngModel)]="projectViewModel.description"></textarea>
+          </div>
         </div>
-      </div>
-      <button class="btn btn-primary " (click)="edit()">{{editMode ? "Save" : "Edit project"}}</button>
-      <button class="btn btn-primary">Delete project</button>
+        <button class="btn btn-primary " *ngIf="userService.isPM()"
+                [disabled]="projectName.invalid || dateCompletion.invalid"
+                (click)="edit()">{{editMode ? "Save" : "Edit project"}}</button>
+        <button class="btn btn-primary" *ngIf="userService.isPM()" (click)="deleteProject()">Delete project</button>
+      </ng-template>
+
+
+      <ng-template #no_edit_templ>
+        <div class="row text-justify h4">
+          <div class="col">
+            <div class="row text-justify  mb-3 mr-4">
+              <div class="col">
+                <h3>Project name:</h3>
+                <span>{{projectViewModel.projectName}}</span>
+              </div>
+            </div>
+            <div class="row text-justify mb-3 mr-4">
+              <div class="col">
+                <h3>Project code:</h3>
+                <span>{{projectViewModel.projectCode}}</span>
+              </div>
+            </div>
+            <div class="row text-justify mb-3 mr-4">
+              <div class="col">
+                <h3>Date of completion:</h3>
+                <span>{{projectViewModel.dateCompletion | date}}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="row text-justify mb-3 mr-4">
+              <div class="col">
+                <h3>Readiness degree:</h3>
+                <span>{{projectViewModel?.readinessDegree != null ? projectViewModel.readinessDegree + '%' : 'in progress'}}</span>
+              </div>
+            </div>
+            <div class="row text-justify mb-3 mr-4">
+              <div class="col">
+                <h3>Project creator:</h3><span>
+                      <a [routerLink]="['/account/',projectViewModel.projectCreator]">
+                        {{projectViewModel.projectCreatorName}} {{projectViewModel.projectCreatorSurname}}
+                      </a></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row  mb-3 mr-4">
+          <div class="col">
+            <h3>Description of project:</h3>
+            <span class="h5">{{projectViewModel.description}}</span>
+          </div>
+        </div>
+        <button class="btn btn-primary " *ngIf="userService.isPM()"
+                (click)="edit()">{{editMode ? "Save" : "Edit project"}}</button>
+        <button class="btn btn-primary" *ngIf="userService.isPM()" (click)="deleteProject()">Delete project</button>
+      </ng-template>
     </div>
   </accordion-group>
 </accordion>
-</div>
-<div class="mt-5 text-justify">
-  <h1 class="text-center">Tasks</h1>
+
+<div class="text-justify p-5 pt-4 backgr">
+  <h1>Tasks:</h1>
   <table class="table table-hover table-dark ">
-    <thead>
+    <thead class="h3">
     <tr>
-      <th scope="col" class="text-center">Task code</th>
-      <th scope="col" class="waves-button" >Task name</th>
-      <th scope="col" class="waves-button" (click)="sortByPriority()">Priority</th>
-      <th scope="col" class="waves-button" >Status</th>
-      <th scope="col" class="waves-button" >Date of creation</th>
-      <th scope="col" class="waves-button" >Due date</th>
+      <th scope="col" class="text-center h3">Task code</th>
+      <th scope="col" class="waves-button" (click)="loadSortedTask(sortParameter[0])">Task name</th>
+      <th scope="col" class="waves-button" (click)="loadSortedTask(sortParameter[1])">Priority</th>
+      <th scope="col" class="waves-button" (click)="loadSortedTask(sortParameter[2])">Status</th>
+      <th scope="col" class="waves-button" (click)="loadSortedTask(sortParameter[3])">Date of creation</th>
+      <th scope="col" class="waves-button" (click)="loadSortedTask(sortParameter[4])">Due date</th>
     </tr>
     </thead>
     <tbody *ngIf="tasks?.length>0; then table else void_table;">
     </tbody>
     <ng-template #table>
-      <tr *ngFor="let task of tasks" class="text-center">
-        <td>{{task.taskCode}}</td>
-        <td>{{task.taskName}}</td>
-        <td>{{task.priority}}</td>
-        <td>{{task.status}}</td>
-        <td>{{task.dateOfCreation | date}}</td>
-        <td>{{task.dueDate | date}}</td>
-        <td><button class="btn btn-primary" [routerLink]="['/task/',task.idTask]" >More</button></td>
+      <tr *ngFor="let task of tasks" class="text-center h3">
+        <td class="h5">{{task.taskCode}}</td>
+        <td class="h5">{{task.taskName}}</td>
+        <td class="h5">{{task.priority}}</td>
+        <td class="h5">{{task.status}}</td>
+        <td class="h5">{{task.dateOfCreation | date}}</td>
+        <td class="h5">{{task.dueDate | date}}</td>
+        <td>
+          <button class="btn btn-primary" [routerLink]="['/task/',task.idTask]">More</button>
+        </td>
       </tr>
     </ng-template>
     <ng-template #void_table>
       <tr>
-        <td colspan="6">No tasks have been created for this project.</td>
+        <td colspan="6" class="h4">No tasks have been created for this project.</td>
       </tr>
     </ng-template>
   </table>

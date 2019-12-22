@@ -1,5 +1,5 @@
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Project} from "../model/project";
 import {ProjectViewModel} from "../model/projectViewModel";
@@ -11,7 +11,6 @@ export class ProjectService { //todo create interface
   constructor(private http: HttpClient) {
   }
 
-  // Ajax request for Project data
   getProjects(): Observable<Project[]> {
     return this.http.get<Project[]>('/api/projects');
   }
@@ -20,8 +19,8 @@ export class ProjectService { //todo create interface
     return this.http.post<Project>('/api/project', project);
   }
 
-  deleteProject(projectId: string): Observable<void> {
-    return this.http.delete<void>('/api/project/' + projectId);
+  deleteProject(idProject: string): Observable<void> {
+    return this.http.delete<void>('/api/project',{params:new HttpParams().set("idProject",idProject)});
   }
 
   getProjectById(id: string): Observable<Project> {
@@ -35,5 +34,4 @@ export class ProjectService { //todo create interface
   saveProjectViewModel(projectViewModel: ProjectViewModel): Observable<Project> {
     return this.http.post<ProjectViewModel>('/api/project/view/model', projectViewModel);
   }
-
 }

@@ -1,9 +1,9 @@
 package com.netcracker.edu.backend.controller;
 
 import com.netcracker.edu.backend.entity.User;
+import com.netcracker.edu.backend.PaginationModels.UserPaginationModelResponse;
 import com.netcracker.edu.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,36 +35,37 @@ public class UserController {
 
     @RequestMapping(value = "/user/authorization", method = RequestMethod.POST)
     public ResponseEntity<User> getUserByLoginAndPassword(@RequestBody User userAuthorization) {
-        User user = userService.findByLoginAndPassword(userAuthorization.getLogin(),userAuthorization.getPassword());
+        User user = userService.findByLoginAndPassword(userAuthorization.getLogin(), userAuthorization.getPassword());
         return ResponseEntity.ok(user);
     }
 
+
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public List<User> getAllUsers() {
-        return userService.findAll();
+    public UserPaginationModelResponse getAllUsersSort(@RequestParam("parameter") String parameter,
+                                                       @RequestParam("page") int page,
+                                                       @RequestParam("size") int size,
+                                                       @RequestParam("direction") int direction) {
+        UserPaginationModelResponse userPage = userService.findAll(parameter,page, size, direction);
+        return userPage;
     }
 
-    @RequestMapping(value = "/users/name/{page}/{size}/{direction}", method = RequestMethod.GET)
-    public Page<User> getAllUsersSortByName(@PathVariable(name = "page") int page,
-                                            @PathVariable(name = "size") int size,
-                                            @PathVariable(name = "direction") boolean direction) {
-        System.out.println(page + "====" + direction + "!!!");
-
-        return userService.findAll(page,size,direction);
-    }
 
     @RequestMapping(method = RequestMethod.POST)
     public User saveUser(@RequestBody User user) {
         return userService.save(user);
     }
 
-    @RequestMapping(value = "/userviewmodel",method = RequestMethod.POST)
+
+    //TODO user
+    @RequestMapping(value = "/userviewmodel", method = RequestMethod.POST)
     public User saveUserViewModel(@RequestBody User user) {
         return userService.saveUserViewModel(user);
     }
 
-    @RequestMapping(value = "/user/delete/{id}",method = RequestMethod.DELETE)
+
+    //TODO delete delete
+    @RequestMapping(value = "/user/delete/{id}", method = RequestMethod.DELETE)
     public void deleteUserById(@PathVariable(name = "id") Long id) {
-         userService.delete(id);
+        userService.delete(id);
     }
 }

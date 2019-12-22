@@ -129,4 +129,11 @@ public class Task {
                 ", taskCreator=" + taskCreator +
                 '}';
     }
+
+    public double getReadnesDegree() {
+        if (status.equals("CLOSED")) {
+            return 100.0;
+        }
+        return 0;
+    }
 }

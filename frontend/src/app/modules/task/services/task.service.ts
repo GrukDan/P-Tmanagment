@@ -1,27 +1,23 @@
 import {Injectable} from "@angular/core";
-import {HttpClient, HttpParams} from "@angular/common/http";
+import {HttpClient, HttpEvent, HttpParams} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {Task} from "../model/task";
 import {TaskViewModel} from "../model/taskViewModel";
-
+import {Comment} from "../model/comment";
+import {CommentViewModel} from "../model/commentViewModel";
+import {TaskPaginationModel} from "../model/taskPaginationModel";
 
 @Injectable()
-// Data service
-export class TaskService { //todo create interface
+export class TaskService {
 
   constructor(private http: HttpClient) {
   }
 
-  // Ajax request for Task data
-  getTasks(): Observable<Task[]> {
-    return this.http.get<Task[]>('/api/tasks');
-  }
-
-  getTasksByName(taskName:string): Observable<Task[]> {
+  getTasksByName(taskName: string): Observable<Task[]> {
     return this.http.get<Task[]>('/api/tasks/name/' + taskName);
   }
 
-  getTasksByNameSortByName(taskName:string): Observable<Task[]> {
+  getTasksByNameSortByName(taskName: string): Observable<Task[]> {
     return this.http.get<Task[]>('/api/tasks/name' + taskName);
   }
 
@@ -49,14 +45,50 @@ export class TaskService { //todo create interface
     return this.http.get<Task[]>('/api/tasks/project/' + id);
   }
 
-  getTaskByIdProjectSortedByPrioruty(id: string,count:number): Observable<Task[]> {
-    return this.http.get<Task[]>('/api/tasks/project/name/sort/priority' ,{
-      params: new HttpParams().set('projectId',id).set('count',count.toString())
-  });
+  getTaskByIdProjectSorted(idProject: string, parameter: string, direction: boolean): Observable<Task[]> {
+    const asc:number = 1;
+    const desc:number = 0;
+    if(direction)
+    return this.http.get<Task[]>('/api/tasks',
+      {
+        params: new HttpParams()
+          .set("idProject", idProject)
+          .set("parameter", parameter)
+          .set("direction", asc.toString())
+      });
+    else
+      return this.http.get<Task[]>('/api/tasks',
+        {
+          params: new HttpParams()
+            .set("idProject", idProject)
+            .set("parameter", parameter)
+            .set("direction", desc.toString())
+        });
   }
 
   getTaskByIdExecutor(id: string): Observable<Task[]> {
     return this.http.get<Task[]>('/api/tasks/executor/' + id);
   }
 
+  saveComment(comment: Comment): Observable<Comment> {
+    return this.http.post<Comment>("/api/comment", comment);
+  }
+
+  getCommentsByTaskId(size: number, idTask: string): Observable<CommentViewModel[]> {
+    return this.http.get<CommentViewModel[]>("/api/comments", {params: new HttpParams().set("size", size.toString()).set("idTask", idTask)});
+  }
+
+  deleteCommentsByTaskId(idTask: string): Observable<void> {
+    return this.http.delete<void>("/api/comments/" + idTask);
+  }
+
+  getTasksSort(parameter:string,page:number,size:number,direction:boolean,search:string=""):Observable<TaskPaginationModel>{
+    return this.http.get<TaskPaginationModel>('/api/tasks/pagination',
+      {params:new HttpParams()
+          .set("parameter",parameter)
+          .set("page",page.toString())
+          .set("size",size.toString())
+          .set("direction",direction.toString())
+          .set("search",search)});
+  }
 }

@@ -40,7 +40,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public void delete(String code) {
-
+    public void deleteProject(Long idProject) {
+        projectRepository.deleteById(idProject);
     }
+
 }

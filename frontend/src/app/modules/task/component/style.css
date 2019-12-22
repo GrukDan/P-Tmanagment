@@ -2,3 +2,32 @@
   background-color: #ddc3a5;
   color: black;
 }
+
+.backgrcomment{
+  background-color: white;
+  color: black;
+}
+
+a{
+  cursor: pointer;
+  text-decoration: none;
+  color: #007bff;
+}
+textarea{
+  width: 40em;
+  height: 7em;
+  max-height: 10em;
+  min-height: 5em;
+}
+
+
+.dateOfCreationComment{
+  font-size: 0.9em;
+}
+
+.nameSurnameComment{
+  display: inline;
+  color: #007bff;
+}
+
+

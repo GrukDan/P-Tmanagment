@@ -22,7 +22,6 @@ export class TaskViewModel {
   executorId: string;
   executorName: string;
   executorSurname: string;
-//executor:Executor;
 
   executors:UserViewModel[];
 }

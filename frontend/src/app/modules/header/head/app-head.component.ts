@@ -20,6 +20,9 @@ import {UserViewModel} from "../../user/model/userViewModel";
 })
 export class HeadComponent implements OnInit {
 
+  public availablePriorities = ["Blocker", "Critical", "Major", "Normal", "Minor"];
+  public availableRoles = ["Project manager", "Developer", "Tester"];
+
   public project: Project = new Project();
   public task: Task = new Task();
   public user: User = new User();
@@ -27,11 +30,12 @@ export class HeadComponent implements OnInit {
   public projects: Project[] = [];
   public userViewModels: UserViewModel[] = [];
 
-  public flag: boolean = false;
   public modalRef: BsModalRef;
   public role: string;
-  public priority: string;
-  public addFlag: boolean = false;  //флаг на проверку введенных данных при добавлении
+  public addFlag: boolean = false;
+  public addTaskFlag: boolean = false;
+  public addUserFlag:boolean = true;
+  public executorName:string="";
 
   private subscriptions: Subscription[] = [];
 
@@ -42,25 +46,25 @@ export class HeadComponent implements OnInit {
               private projectService: ProjectService,
               private taskService: TaskService,
               private router: Router) {
+    this.addUserFlag = true;
   }
 
   ngOnInit() {
+  }
+
+  public projectNavigationClick(): void {
     this.loadProjects();
   }
 
-  private loadProjects(): void {
-    this.loadingService.show();
+  public loadProjects(): void {
     this.subscriptions.push(this.projectService.getProjects().subscribe(projects => {
       this.projects = projects as Project[];
-      this.loadingService.hide();
     }));
   }
 
   private loadUsers(): void {
-    this.loadingService.show();
     this.subscriptions.push(this.userService.getUserByIdAssignProject(this.task.idProject).subscribe(users => {
       this.userViewModels = users as UserViewModel[];
-      this.loadingService.hide();
     }));
   }
 
@@ -72,62 +76,80 @@ export class HeadComponent implements OnInit {
     this.modalRef.hide();
   }
 
-  public addUser(): void {
-    this.loadingService.show();
-    this.subscriptions.push(this.userService.saveUser(this.user).subscribe(() => {
-      this._closeModal();
-      this.loadingService.hide();
+  public addUser(role:string): void {
+    this.setRole(role);
+    this.subscriptions.push(this.userService.saveUser(this.user).subscribe(user => {
+      if(user!=null){
+        this.addUserFlag = true;
+        this._closeModal();
+      }
+      else this.addUserFlag = false;
     }));
   }
 
   public addProject(): void {
-    this.loadingService.show();
-    this.project.projectCreator = this.userService.account.idUser;
+    this.project.projectCreator = this.userService.getAccount().idUser;
     this.subscriptions.push(this.projectService.saveProject(this.project).subscribe(() => {
       this._closeModal();
-      this.loadingService.hide();
     }));
   }
 
-  public addTask(): void {
+  public addTask(executor,priority): void {
     this.task.status = "OPEN"
     this.task.dateOfCreation = Date.now().toString();
     this.task.updated = Date.now().toString();
-    this.task.taskCreator = this.userViewModels[0].idUser;
-    this.loadingService.show();
+    this.task.taskCreator = this.userService.getAccount().idUser;
+    if(executor!="") this.task.executor = executor;
+    this.setPriority(priority)
+    console.log(this.task);
     this.subscriptions.push(this.taskService.saveTask(this.task).subscribe(() => {
       this._closeModal();
-      this.loadingService.hide();
     }));
   }
 
-  public setRole() {
-    if (this.role == "Admin") this.user.role = "ADMIN";
-    if (this.role == "Project manager") this.user.role = "PROJECT_MANAGER";
-    if (this.role == "Developer") this.user.role = "DEVELOPER";
-    if (this.role == "Tester") this.user.role = "TESTER";
+  public setRole(role: string): void {
+    if (role == "Project manager") this.user.role = "PROJECT_MANAGER";
+    if (role == "Developer") this.user.role = "DEVELOPER";
+    if (role == "Tester") this.user.role = "TESTER";
   }
 
-  public setPriority() {
-    if (this.priority == "Blocker") this.task.priority = "BLOCKER";
-    if (this.priority == "Critical") this.task.priority = "CRITICAL";
-    if (this.priority == "Major") this.task.priority = "MAJOR";
-    if (this.priority == "Normal") this.task.priority = "NORMAL";
-    if (this.priority == "Minor") this.task.priority = "MINOR";
+  public setPriority(priority: string): void {
+    if (priority == "Blocker") this.task.priority = "BLOCKER";
+    if (priority == "Critical") this.task.priority = "CRITICAL";
+    if (priority == "Major") this.task.priority = "MAJOR";
+    if (priority == "Normal") this.task.priority = "NORMAL";
+    if (priority == "Minor") this.task.priority = "MINOR";
   }
 
   public onChangeExecutor(val): void {
-    this.task.executor = val.target.value;
+    console.log(val);
+    this.task.executor = val;
   }
 
   public onChangeProject(val): void {
-    let projectCode = this.projects.find(item=>item.idProject==val.target.value).projectCode + "-";
+    let projectCode = this.projects.find(item => item.idProject == val.target.value).projectCode + "-";
     this.task.taskCode = projectCode;
     this.task.idProject = val.target.value;
     this.loadUsers();
   }
 
-  public search(value: string): void {
-    this.router.navigate(['/search', value]);
+  public search(target): void {
+    this.router.navigate(['/search', target.value]);
+    target.value="";
   }
+
+  public logOut(): void {
+    this.router.navigate(['']);
+    this.userService.removeAccount();
+  }
+
+  public toTasks(){
+    this.router.navigate(['/tasks']);
+  }
+
+  public toAccounts(){
+    this.router.navigate(['/accounts']);
+
+  }
+
 }

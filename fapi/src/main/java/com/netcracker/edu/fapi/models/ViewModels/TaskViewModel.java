@@ -1,4 +1,6 @@
-package com.netcracker.edu.fapi.models;
+package com.netcracker.edu.fapi.models.ViewModels;
+
+import com.netcracker.edu.fapi.models.Task;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -256,5 +258,12 @@ public class TaskViewModel {
 
     public void setExecutors(UserViewModel[] executors) {
         this.executors = executors;
+    }
+
+    public double getReadnesDegree() {
+        if (status.equals("CLOSED")) {
+            return 100.0;
+        }
+        return 0;
     }
 }

@@ -22,6 +22,7 @@ import {HeaderModule} from "./modules/header/head/header.module";
 import {AccountComponent} from "./modules/user/component/account.component";
 import {SearchResultComponent} from "./modules/search-result-table/search-result.component";
 import {AccountsTableComponent} from "./modules/accounts/accounts-table.component";
+import {TasksTableComponent} from "./modules/tasks-table/tasks-table.component";
 
 const appRoutes: Routes = [
   {path: "", component: FirstPageComponent},
@@ -30,6 +31,7 @@ const appRoutes: Routes = [
   {path: 'account/:id', component: AccountComponent},
   {path: 'search/:search', component: SearchResultComponent},
   {path: 'accounts', component: AccountsTableComponent},
+  {path: 'tasks', component: TasksTableComponent},
   {path: "**", component: NotFoundPageComponent}
 ];
 

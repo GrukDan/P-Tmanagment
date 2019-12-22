@@ -1,36 +1,42 @@
-<div class="mt-5 text-justify">
-  <h2 class="ml-3">All accounts</h2>
-  <table class="table table-hover table-dark ">
-    <thead>
+<div class="text-justify p-5  back">
+  <h1>All accounts</h1>
+  <table class="table  table-dark">
+    <thead class="h4">
     <tr>
-      <th scope="col" class="waves-button" (click)="sortByName()">Name</th>
-      <th scope="col" class="waves-button">Surname</th>
-      <th scope="col" class="waves-button" >Email</th>
-      <th scope="col" class="waves-button" >Role</th>
-      <th scope="col" class="waves-button" >Assign project</th>
-
+      <th scope="col" class="waves-button " (click)="sort(parameters[0])">Name</th>
+      <th scope="col" class="waves-button " (click)="sort(parameters[1])">Surname</th>
+      <th scope="col" class="waves-button " (click)="sort(parameters[2])">Email</th>
+      <th scope="col" class="waves-button " (click)="sort(parameters[3])">Role</th>
+      <th scope="col" class="text-center h4">Assign project</th>
     </tr>
     </thead>
     <tbody *ngIf="accounts.length>0; then table else void_table;">
     </tbody>
     <ng-template #table>
-      <tr *ngFor="let account of accounts" class="text-center">
-        <td>{{account.name}}</td>
-        <td>{{account.surname}}</td>
-        <td>{{account.email}}</td>
-        <td>{{account.role}}</td>
-        <td *ngIf="account.assignProject">{{account.assignProject}}</td>
-        <td *ngIf="!account.assignProject">No assign project</td>
-        <td><button class="btn btn-primary" [routerLink]="['/account',account.idUser]">More</button></td>
+      <tr *ngFor="let account of accounts " class="text-center ">
+        <td class="h5">{{account.name}}</td>
+        <td class="h5">{{account.surname}}</td>
+        <td class="h5">{{account.email}}</td>
+        <td class="h5">{{account.role}}</td>
+        <td  class="h5" *ngIf="account.assignProjectName!=null"><a [routerLink]="['/project',account.assignProject]">{{account.assignProjectName}}</a></td>
+        <td  class="h5" *ngIf="account.assignProjectName==null">No assign project</td>
+        <td>
+          <button class="btn btn-primary" [routerLink]="['/account',account.idUser]">More</button>
+        </td>
       </tr>
-    </ng-template>
-    <ng-template #void_table>
-      <tr>
-        <td colspan="6">No accounts found.</td>
-      </tr>
-    </ng-template>
-    <ng-template #no_assignProject>
-      <td>No assign project</td>
     </ng-template>
   </table>
+  <div class="row">
+    <div class="col-xs-12 col-12">
+      <pagination [boundaryLinks]="true" [totalItems]="pagesCount"  class="justify-content-center"
+                  previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
+                  (pageChanged)="pageChanged($event)">
+      </pagination>
+    </div>
+  </div>
+  <ng-template #void_table>
+    <tr>
+      <td colspan="7" class="h3">No accounts found.</td>
+    </tr>
+  </ng-template>
 </div>

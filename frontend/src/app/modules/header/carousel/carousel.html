@@ -3,7 +3,7 @@
   <div class=" carousel-caption d-none d-md-block mask rgba-black-strong ">
     <div class="container-fluid d-flex align-items-center justify-content-center h-100">
       <div class="row d-flex  justify-content-center text-center">
-        <div class="col-md-13" *ngIf="!userService?.account">
+        <div class="col-md-13" *ngIf="!userService?.getAccount()">
           <h2 class="display-4 font-weight-bold white-text fontRaleway pt-5 mb-2">WELCOME</h2>
           <hr class="hr-light"/>
           <h2 class="white-text fontRaleway m-4">Get started!</h2>
@@ -15,7 +15,6 @@
       </div>
     </div>
   </div>
-
   <div class="carousel-inner">
     <div class="carousel-item active">
       <img class="d-block w-100" src="assets/img/back.jpg" alt="First slide">
@@ -37,7 +36,6 @@
     </div>
   </div>
 </div>
-
 
 <ng-template #LogIn>
   <div class="modal-header">
@@ -70,8 +68,7 @@
       </form>
     </div>
   </div>
-  <div class="alert alert-danger" *ngIf="userService?.account">Login or password is incorrect</div>
-<!--  <div class="alert alert-danger" [hidden]="userService?.account.name">Login or password is incorrect</div>-->
+  <div class="alert alert-danger" *ngIf="userService?.getAccount()">Login or password is incorrect</div>
   <div class="modal-footer">
     <button class="btn btn-grey" data-dismiss="modal" (click)="_closeModal()">Close</button>
     <button type="submit" class="btn btn-primary" (click)="authorization()" [disabled]=" login.invalid || password.invalid|| password.untouched ||login.untouched"

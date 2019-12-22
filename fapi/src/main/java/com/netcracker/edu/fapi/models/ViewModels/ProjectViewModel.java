@@ -1,4 +1,7 @@
-package com.netcracker.edu.fapi.models;
+package com.netcracker.edu.fapi.models.ViewModels;
+
+import com.netcracker.edu.fapi.models.Project;
+import com.netcracker.edu.fapi.models.Task;
 
 import java.util.Arrays;
 import java.util.Date;

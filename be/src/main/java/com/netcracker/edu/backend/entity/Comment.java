@@ -1,27 +1,25 @@
 package com.netcracker.edu.backend.entity;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
+@Table(name = "comment")
 public class Comment {
-    private int idComment;
+    private long idComment;
     private Timestamp dateOfCreation;
-    private int idUser;
-    private int idTask;
+    private long idUser;
+    private long idTask;
     private String comment;
 
     @Id
     @Column(name = "id_comment")
-    public int getIdComment() {
+    public long getIdComment() {
         return idComment;
     }
 
-    public void setIdComment(int idComment) {
+    public void setIdComment(long idComment) {
         this.idComment = idComment;
     }
 
@@ -37,21 +35,21 @@ public class Comment {
 
     @Basic
     @Column(name = "id_user")
-    public int getIdUser() {
+    public long getIdUser() {
         return idUser;
     }
 
-    public void setIdUser(int idUser) {
+    public void setIdUser(long idUser) {
         this.idUser = idUser;
     }
 
     @Basic
     @Column(name = "id_task")
-    public int getIdTask() {
+    public long getIdTask() {
         return idTask;
     }
 
-    public void setIdTask(int idTask) {
+    public void setIdTask(long idTask) {
         this.idTask = idTask;
     }
 

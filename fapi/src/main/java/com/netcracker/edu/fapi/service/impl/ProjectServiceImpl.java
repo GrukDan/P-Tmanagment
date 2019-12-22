@@ -1,19 +1,24 @@
 package com.netcracker.edu.fapi.service.impl;
 
 import com.netcracker.edu.fapi.models.*;
+import com.netcracker.edu.fapi.models.ViewModels.ProjectViewModel;
+import com.netcracker.edu.fapi.models.ViewModels.UserViewModel;
 import com.netcracker.edu.fapi.service.ProjectService;
 import com.netcracker.edu.fapi.service.TaskService;
 import com.netcracker.edu.fapi.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-@Service("customProjectDetailsService")
+@Service
 public class ProjectServiceImpl implements ProjectService {
 
     @Value("${backend.server.url}")
@@ -24,6 +29,18 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Autowired
     private TaskService taskService;
+
+    @Override
+    public void deleteProject(String idProject) {
+        MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+        map.add("idProject", idProject);
+
+        RestTemplate restTemplate = new RestTemplate();
+        String url = UriComponentsBuilder.fromUriString(backendServerUrl + "/api/project")
+                .queryParams(map)
+                .toUriString();
+         restTemplate.delete(url);
+    }
 
     @Override
     public Project findById(Long id) {
@@ -40,7 +57,6 @@ public class ProjectServiceImpl implements ProjectService {
         projectViewModel.setProjectCreatorName(user.getName());
         projectViewModel.setProjectCreatorSurname(user.getSurname());
 
-        projectViewModel.setTasks((Task[]) taskService.findByIdProject(projectViewModel.getIdProject()).toArray());
         return projectViewModel;
     }
 

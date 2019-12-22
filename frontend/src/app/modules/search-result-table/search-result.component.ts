@@ -1,55 +1,81 @@
-import {Component, OnInit, TemplateRef} from "@angular/core";
-import {Task} from "../task/model/task";
-import {BsModalRef, BsModalService} from "ngx-bootstrap";
+import {Component, OnInit} from "@angular/core";
+import { PageChangedEvent} from "ngx-bootstrap";
 import {Ng4LoadingSpinnerService} from "ng4-loading-spinner";
 import {Subscription} from "rxjs";
 import {TaskService} from "../task/services/task.service";
 import {ActivatedRoute} from "@angular/router";
 import {TaskViewModel} from "../task/model/taskViewModel";
+import {TaskPaginationModel} from "../task/model/taskPaginationModel";
 
 @Component({
   selector: 'search-result',
   templateUrl: './search-result.html',
   styleUrls: ['./style.css']
 })
-export class SearchResultComponent {
+export class SearchResultComponent implements OnInit{
 
   public searchString:string;
-  public tasks :Task[] = [];
+  public taskPaginationModel:TaskPaginationModel;
+  public tasks: TaskViewModel[] = [];
   private subscriptions: Subscription[] = [];
+
+  public parameters: string[] = ["taskName", "priority", "status","dateOfCreation","dueDate","updated"];
+  public pagesCount: number;
+  public direction: boolean = true;
+  public parameter: string;
+  public page: number;
+  public size: number;
 
   constructor(private loadingService: Ng4LoadingSpinnerService,
               private activateRoute: ActivatedRoute,
               private taskService:TaskService) {
+
+    this.activateRoute.params.subscribe(
+      params => {
+        this.searchString = this.activateRoute.snapshot.params['search'];
+        this.parameter = "taskName";
+        this.page = 0;
+        this.size = 5;
+        this.pagesCount = 11;
+        this.loadTasks(this.page);
+      }
+    );
   }
 
-  ngOnInit(): void {
-    this.searchString = this.activateRoute.snapshot.params['search'];
-    this.loadTasks( this.searchString);
-  }
+  ngOnInit(): void {}
 
-
-  private loadTasks(search): void {
-    this.loadingService.show();
-    // Get data from BillingAccountService
-    this.subscriptions.push(this.taskService.getTasksByName(search).subscribe(tasks => {
-      // Parse json response into local array
-      this.tasks = tasks as Task[];
-      // Check data in console
-      console.log(this.tasks);// don't use console.log in angular :)
-      this.loadingService.hide();
+  private loadTasks(page: number): void {
+    this.subscriptions.push(this.taskService.getTasksSort(this.parameter, page, this.size, this.direction,this.searchString).subscribe(taskPaginationModel => {
+      this.taskPaginationModel = taskPaginationModel;
+      this.tasks = this.taskPaginationModel.tasksOnPage;
+      this.pagesCount = (this.taskPaginationModel.pagesCount/5) * 10;
+      this.changePriorityAndStatus();
     }));
   }
 
+  public sort(parameter: string): void {
+    this.parameter = parameter;
+    this.direction = !this.direction;
+    this.loadTasks(this.page);
+  }
 
-  sortByName():void{
-    this.loadingService.show();
-    // Get data from BillingAccountService
-    this.subscriptions.push(this.taskService.getTasksByNameSortByName(this.searchString).subscribe(tasks => {
-      // Parse json response into local array
-      this.tasks = tasks as Task[];
-      // Check data in console
-      this.loadingService.hide();
-    }));
+  pageChanged(event: PageChangedEvent) {
+    this.page = event.page - 1;
+    this.loadTasks(this.page);
+  }
+
+  private changePriorityAndStatus():void{
+    this.tasks.forEach(task=>{
+      if(task.priority == "BLOCKER") task.priority = "Blocker";
+      else if (task.priority == "CRITICAL") task.priority = "Critical";
+      else if (task.priority == "MAJOR") task.priority = "Major";
+      else if (task.priority == "MINOR") task.priority = "Minor";
+      else task.priority = "Normal"
+
+      if(task.status =="OPEN") task.status = "Open";
+      else if(task.status =="IN_PROGRESS") task.status = "In progress";
+      else if(task.status =="READY_FOR_TEST") task.status = "Ready for test";
+      else task.status = "Closed";
+    })
   }
 }

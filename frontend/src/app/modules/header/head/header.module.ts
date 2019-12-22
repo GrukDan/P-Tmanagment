@@ -10,6 +10,9 @@ import {HeadComponent} from "./app-head.component";
 import {UserModule} from "../../user/user.module";
 import {SearchResultModule} from "../../search-result-table/search-result.module";
 import {AccountsTableModule} from "../../accounts/accounts-table.module";
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import {TaskTableModule} from "../../tasks-table/task-table.module";
+
 
 @NgModule({
   declarations: [
@@ -22,12 +25,14 @@ import {AccountsTableModule} from "../../accounts/accounts-table.module";
     UserModule,
     SearchResultModule,
     AccountsTableModule,
+    TaskTableModule,
 
     BrowserModule,
     RouterModule,
     FormsModule,
     HttpClientModule,
     Ng4LoadingSpinnerModule.forRoot(),
+    PaginationModule.forRoot(),
     ReactiveFormsModule,
 
   ],

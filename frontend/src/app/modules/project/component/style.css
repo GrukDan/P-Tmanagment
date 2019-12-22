@@ -8,34 +8,15 @@ textarea{
 }
 
 .backgr{
-  background-color: #ddc3a5;
-}
-
-.card.customClass,
-.card.customClass .card-header,
-.panel.customClass {
-  background-color: #5bc0de;
-  display: none;
-
-  color: #fff;
-}
-.panel.customClass .panel-body {
-  display: none;
-  background-color: #337aa7;
+  background-color:#ddc3a5;
 }
 
 textarea{
   min-height: 150px;
+  max-height: 300px;
 }
 
-.customClass {
-  background-color: #337aa7 !important;
-  display: none;
-}
-.card-header{
-  background-color: #337aa7 !important;
+.accordBackgr {
+  background-color: #337aa7;
 }
 
-.qwe .card-header, .qwe .panel-title{
-  background-color: #3bc1a0 !important;
-}
